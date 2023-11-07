@@ -1,14 +1,23 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logout from "@/components/Logout";
+import { Dispatch, SetStateAction } from "react";
 
-export default function NavLinks() {
+interface NavLinksProps {
+  setSidebarState: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function NavLinks({ setSidebarState }: NavLinksProps) {
   const pathname = usePathname();
   return (
-    <nav>
-      <Link href="#">Sidebar</Link>
+    <nav className="border flex gap-x-5 pr-2">
+      <button
+        type="button"
+        onClick={() => setSidebarState((state: boolean) => !state)}
+      >
+        Sidebar
+      </button>
       <Logout />
     </nav>
   );

@@ -1,6 +1,6 @@
 export default function Search() {
   return (
-    <div>
+    <div className="border">
       <button>Search</button>
     </div>
   );
