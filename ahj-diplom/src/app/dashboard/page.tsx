@@ -10,7 +10,7 @@ const SOCKET_URL = "ws://127.0.0.1:3001/api/ws/";
 
 export default function Dashboard() {
   const [sidebarState, setSidebarState] = useState(false);
-  const [messageHistory, setMessageHistory] = useState<MessageEvent<any>[]>([]);
+  const [messageHistory, setMessageHistory] = useState<any[]>([]);
 
   const {
     sendMessage,
@@ -28,10 +28,10 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    if (lastMessage !== null) {
-      setMessageHistory((prev) => prev.concat(lastMessage));
+    if (lastJsonMessage !== null) {
+      setMessageHistory((prev) => prev.concat(lastJsonMessage));
     }
-  }, [lastMessage, setMessageHistory]);
+  }, [lastJsonMessage, setMessageHistory]);
 
   useEffect(() => {
     if (readyState === ReadyState.CLOSED) {
@@ -50,35 +50,50 @@ export default function Dashboard() {
   const handleClickSendMessage = useCallback(
     (event: KeyboardEvent<HTMLTextAreaElement>) => {
       event.preventDefault();
-      sendMessage(event.currentTarget.value);
+      sendJsonMessage({
+        text: event.currentTarget.value,
+        date: new Date(),
+        author: "me",
+      });
       event.currentTarget.value = "";
     },
-    [sendMessage],
+    [sendJsonMessage],
   );
 
   return (
     <>
-      <header className="flex justify-between items-center w-full h-[5%] min-h-[2rem] border">
-        <h1 className="border">Dashboard</h1>
+      <header className="flex justify-between items-center w-full h-[5%] min-h-[2rem] border-b-2">
+        <h1 className="border">
+          Dashboard: <span>The WebSocket is currently {connectionStatus}</span>
+        </h1>
         <div className="flex gap-x-8">
           <Search />
           <NavLinks setSidebarState={setSidebarState} />
         </div>
       </header>
-      <main className={"flex h-[95%] border w-full"}>
+      <main className={"flex h-[95%] w-full"}>
         <div
           className={clsx(
             "flex flex-col transition-all duration-200 ease-in-out overflow-hidden overflow-x-hidden",
             { "w-full": !sidebarState, "w-2/3": sidebarState },
           )}
         >
-          <div className="h-full">
-            <div>
-              <span>The WebSocket is currently {connectionStatus}</span>
-            </div>
-            <ul>
+          <div className="h-full overflow-y-scroll bg-gray-50">
+            <ul className="flex flex-col gap-2">
               {messageHistory.map((message, idx) => (
-                <div key={idx}>{message ? message.data.toString() : null}</div>
+                <div
+                  key={idx}
+                  className={clsx(
+                    "border p-3 w-fit max-w-2xl rounded-2xl bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 shadow-sm",
+                    {
+                      "self-end": message.author === "me",
+                    },
+                  )}
+                >
+                  <p className="text-gray-400 text-xs italic">{message.date}</p>
+                  <p className="text-gray-400 text-xs">{message.author}</p>
+                  <p>{message.text}</p>
+                </div>
               ))}
             </ul>
           </div>
