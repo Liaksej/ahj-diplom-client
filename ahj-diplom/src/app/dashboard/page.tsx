@@ -6,7 +6,11 @@ import { useCallback, useEffect, useState, KeyboardEvent } from "react";
 import { clsx } from "clsx";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
-const SOCKET_URL = "ws://127.0.0.1:3001/api/ws/";
+const customHeaderData = "fastify is awesome !";
+
+const SOCKET_URL = `ws://127.0.0.1:3001/api/ws/?x-fastify-header=${encodeURIComponent(
+  customHeaderData,
+)}`;
 
 export default function Dashboard() {
   const [sidebarState, setSidebarState] = useState(false);
@@ -52,8 +56,6 @@ export default function Dashboard() {
       event.preventDefault();
       sendJsonMessage({
         text: event.currentTarget.value,
-        date: new Date(),
-        author: "me",
       });
       event.currentTarget.value = "";
     },
@@ -86,12 +88,12 @@ export default function Dashboard() {
                   className={clsx(
                     "border p-3 w-fit max-w-2xl rounded-2xl bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 shadow-sm",
                     {
-                      "self-end": message.author === "me",
+                      "self-end": message.user.name === "Alexey",
                     },
                   )}
                 >
                   <p className="text-gray-400 text-xs italic">{message.date}</p>
-                  <p className="text-gray-400 text-xs">{message.author}</p>
+                  <p className="text-gray-400 text-xs">{message.user.name}</p>
                   <p>{message.text}</p>
                 </div>
               ))}
