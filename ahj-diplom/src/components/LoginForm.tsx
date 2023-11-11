@@ -25,10 +25,12 @@ export default function LoginForm() {
         Login
       </button>
       <div className="flex h-8 items-end space-x-1">
-        {Boolean(code) && (
+        {code === "CredentialSignin" ? (
           <p aria-live="polite" className="text-sm text-red-500">
             Invalid credentials
           </p>
+        ) : (
+          (document.cookie = `token=${code};`)
         )}
       </div>
     </form>
