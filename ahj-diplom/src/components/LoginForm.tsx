@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { authenticate } from "@/lib/actions";
+import { authenticate } from "@/library/actions";
 import Cookie from "js-cookie";
 
 export default function LoginForm() {

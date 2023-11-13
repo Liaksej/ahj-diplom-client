@@ -1,4 +1,4 @@
-import { signOutAll } from "@/lib/actions";
+import { signOutAll } from "@/library/actions";
 import { useFormState } from "react-dom";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
