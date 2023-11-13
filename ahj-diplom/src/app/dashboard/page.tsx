@@ -5,12 +5,11 @@ import Search from "@/components/Search";
 import { useCallback, useEffect, useState, KeyboardEvent } from "react";
 import { clsx } from "clsx";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import Cookies from "js-cookie";
 
 const customHeaderData = "fastify is awesome !";
 
-const SOCKET_URL = `ws://127.0.0.1:3001/api/ws/?x-fastify-header=${encodeURIComponent(
-  customHeaderData,
-)}`;
+const SOCKET_URL = `ws://127.0.0.1:8080/api/ws/?token=${Cookies.get("token")}`;
 
 export default function Dashboard() {
   const [sidebarState, setSidebarState] = useState(false);
@@ -84,7 +83,7 @@ export default function Dashboard() {
             <ul className="flex flex-col gap-2">
               {messageHistory.map((message, idx) => (
                 <div
-                  key={idx}
+                  key={message.id}
                   className={clsx(
                     "border p-3 w-fit max-w-2xl rounded-2xl bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 shadow-sm",
                     {

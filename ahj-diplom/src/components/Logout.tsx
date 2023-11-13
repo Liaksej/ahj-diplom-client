@@ -1,12 +1,17 @@
 import { signOutAll } from "@/lib/actions";
 import { useFormState } from "react-dom";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 export default function Logout() {
   const [code, action] = useFormState(signOutAll, undefined);
+
   return (
     <div>
       <form action={action}>
-        <button type="submit">Logout</button>
+        <button type="submit" onClick={() => Cookies.remove("session")}>
+          Logout
+        </button>
         <div className="flex h-8 items-end space-x-1">
           {Boolean(code) && (
             <>

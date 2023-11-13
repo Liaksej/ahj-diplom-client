@@ -2,9 +2,15 @@
 
 import { useFormState } from "react-dom";
 import { authenticate } from "@/lib/actions";
+import Cookie from "js-cookie";
 
 export default function LoginForm() {
   const [code, action] = useFormState(authenticate, undefined);
+
+  if (code && code !== "CredentialSignin") {
+    console.log(code);
+    Cookie.set("token", code, { expires: 24 * 60 * 60 });
+  }
 
   return (
     <form className="flex flex-col gap-4" action={action}>
@@ -29,9 +35,7 @@ export default function LoginForm() {
           <p aria-live="polite" className="text-sm text-red-500">
             Invalid credentials
           </p>
-        ) : (
-          (document.cookie = `token=${code};`)
-        )}
+        ) : null}
       </div>
     </form>
   );
