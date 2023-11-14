@@ -6,6 +6,8 @@ import { useCallback, useEffect, useState, KeyboardEvent } from "react";
 import { clsx } from "clsx";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Cookies from "js-cookie";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const customHeaderData = "fastify is awesome !";
 
@@ -61,6 +63,7 @@ export default function Dashboard() {
     [sendJsonMessage],
   );
 
+  // @ts-ignore
   return (
     <>
       <header className="flex justify-between items-center w-full h-[5%] min-h-[2rem] border-b-2">
@@ -93,7 +96,21 @@ export default function Dashboard() {
                 >
                   <p className="text-gray-400 text-xs italic">{message.date}</p>
                   <p className="text-gray-400 text-xs">{message.user.name}</p>
-                  <p>{message.text}</p>
+                  <Markdown
+                    className="prose prose-slate"
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      a: ({ node, ...props }) => (
+                        <a
+                          {...props}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        />
+                      ),
+                    }}
+                  >
+                    {message.text}
+                  </Markdown>
                 </div>
               ))}
             </ul>
