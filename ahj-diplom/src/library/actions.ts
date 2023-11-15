@@ -36,5 +36,6 @@ export async function authenticate(
 }
 
 export async function signOutAll() {
+  cookies().delete("token");
   await signOut();
 }
