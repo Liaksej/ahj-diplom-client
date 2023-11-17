@@ -2,68 +2,69 @@
 
 import NavLinks from "@/components/NavLinks";
 import Search from "@/components/Search";
-import { useCallback, useEffect, useState, KeyboardEvent } from "react";
+import { useState, useContext, useEffect } from "react";
 import { clsx } from "clsx";
-import useWebSocket, { ReadyState } from "react-use-websocket";
-import Cookies from "js-cookie";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-
-const customHeaderData = "fastify is awesome !";
-
-const SOCKET_URL = `ws://127.0.0.1:8080/api/ws/?token=${Cookies.get("token")}`;
+import { ContextProvider } from "@/components/ContextProvider";
+import UserContext from "@/context";
+import { useMessages } from "@/hooks/useMessages";
+import MainInput from "@/components/MainInput";
 
 export default function Dashboard() {
+  const { connectionStatus } = useMessages();
+  const context = useContext(UserContext);
   const [sidebarState, setSidebarState] = useState(false);
-  const [messageHistory, setMessageHistory] = useState<any[]>([]);
 
-  const {
-    sendMessage,
-    sendJsonMessage,
-    lastMessage,
-    lastJsonMessage,
-    readyState,
-    getWebSocket,
-  } = useWebSocket(SOCKET_URL, {
-    onOpen: () => {
-      console.log("opened");
-    },
-    shouldReconnect: (closeEvent) => true,
-    onClose: () => console.log("closed"),
-  });
+  // const dragOverHandler = (event: DragEvent) => {
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  //   console.log(event.target);
+  //   if (event.target) {
+  //     event.target.style.opacity = "0.5";
+  //   }
+  //   event.dataTransfer.dropEffect = "move";
+  // };
+  //
+  // const dropHandler = (event: DragEvent) => {
+  //   console.log("File(s) dropped");
+  //
+  //   event.preventDefault();
+  //
+  //   if (event.target) {
+  //     event.target.style.opacity = "1.0";
+  //   }
+  //
+  //   if (event.dataTransfer.items) {
+  //     // Use DataTransferItemList interface to access the file(s)
+  //     [...event.dataTransfer.items].forEach((item, i) => {
+  //       // If dropped items aren't files, reject them
+  //       if (item.kind === "file") {
+  //         const file = item.getAsFile();
+  //         if (file) {
+  //           console.log(`... file[${i}].name = ${file.name}`);
+  //         }
+  //       }
+  //     });
+  //   } else {
+  //     // Use DataTransfer interface to access the file(s)
+  //     Array.from(event.dataTransfer.files).forEach((file, i) => {
+  //       console.log(`... file[${i}].name = ${file.name}`);
+  //     });
+  //   }
+  // };
+  //
+  // const dragLeaveHandler = (event: DragEvent) => {
+  //   event.preventDefault();
+  //   if (event.target) {
+  //     event.target.style.opacity = "1.0";
+  //   }
+  // };
 
   useEffect(() => {
-    if (lastJsonMessage !== null) {
-      setMessageHistory((prev) => prev.concat(lastJsonMessage));
-    }
-  }, [lastJsonMessage, setMessageHistory]);
+    console.log(context.state.messageHistory);
+  }, [context.state.messageHistory]);
 
-  useEffect(() => {
-    if (readyState === ReadyState.CLOSED) {
-      setMessageHistory(() => []);
-    }
-  }, [readyState, setMessageHistory]);
-
-  const connectionStatus = {
-    [ReadyState.CONNECTING]: "Connecting",
-    [ReadyState.OPEN]: "Open",
-    [ReadyState.CLOSING]: "Closing",
-    [ReadyState.CLOSED]: "Closed",
-    [ReadyState.UNINSTANTIATED]: "Uninstantiated",
-  }[readyState];
-
-  const handleClickSendMessage = useCallback(
-    (event: KeyboardEvent<HTMLTextAreaElement>) => {
-      event.preventDefault();
-      sendJsonMessage({
-        text: event.currentTarget.value,
-      });
-      event.currentTarget.value = "";
-    },
-    [sendJsonMessage],
-  );
-
-  // @ts-ignore
   return (
     <>
       <header className="flex justify-between items-center w-full h-[5%] min-h-[2rem] border-b-2">
@@ -77,6 +78,12 @@ export default function Dashboard() {
       </header>
       <main className={"flex h-[95%] w-full"}>
         <div
+          id="drop_zone"
+          // onDrop={(event) => dropHandler(event)}
+          // onDragOver={(event) => dragOverHandler(event)}
+          // onDragLeave={(event) => {
+          //   dragLeaveHandler(event);
+          // }}
           className={clsx(
             "flex flex-col transition-all duration-200 ease-in-out overflow-hidden overflow-x-hidden",
             { "w-full": !sidebarState, "w-2/3": sidebarState },
@@ -84,7 +91,7 @@ export default function Dashboard() {
         >
           <div className="h-full overflow-y-scroll bg-gray-50">
             <ul className="flex flex-col gap-2">
-              {messageHistory.map((message, idx) => (
+              {context.state.messageHistory.map((message) => (
                 <div
                   key={message.id}
                   className={clsx(
@@ -115,18 +122,7 @@ export default function Dashboard() {
               ))}
             </ul>
           </div>
-          <textarea
-            onKeyDown={(e) =>
-              e.key === "Enter" && e.metaKey && handleClickSendMessage(e)
-            }
-            className="min-h-[3rem] border-4 mb-1 dark:bg-gray-950"
-            placeholder="Write a message"
-          ></textarea>
-          <div className="absolute bottom-5 right-3 flex gap-x-1">
-            <button>Video</button>
-            <button>Audio</button>
-            <button>Document</button>
-          </div>
+          <MainInput />
         </div>
         <aside
           className={clsx(
