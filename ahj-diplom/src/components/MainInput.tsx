@@ -1,6 +1,8 @@
 import { ChangeEvent, KeyboardEvent, useCallback, useContext } from "react";
 import UserContext from "@/context";
 import { useMessages } from "@/hooks/useMessages";
+import UploadButton from "@/components/UploadButton";
+import ImageUploadButton from "@/components/ImageUploadButton";
 
 export default function MainInput() {
   const context = useContext(UserContext);
@@ -16,12 +18,6 @@ export default function MainInput() {
     },
     [sendJsonMessage],
   );
-
-  const handlerFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      dispatch({ type: "setFile", payload: event.target.files[0] });
-    }
-  };
 
   const handlerFileUpload = async () => {
     if (context.state.file) {
@@ -43,20 +39,10 @@ export default function MainInput() {
         placeholder="Write a message"
       ></textarea>
       <div className="absolute bottom-5 right-3 flex gap-x-1">
-        {/*<button>Image</button>*/}
+        <UploadButton inputName={"hiddenImageInput"}>Image</UploadButton>
         {/*<button>Video</button>*/}
         {/*<button>Audio</button>*/}
-        <input
-          style={{ display: "none" }}
-          id="hiddenFileInput"
-          type="file"
-          onChange={handlerFileChange}
-        />
-        <button
-          onClick={() => document.getElementById("hiddenFileInput")?.click()}
-        >
-          Document
-        </button>
+        <UploadButton inputName={"hiddenFileInput"}>Document</UploadButton>
       </div>
     </>
   );
