@@ -22,9 +22,9 @@ export async function authenticate(
     const { token } = (await response.json()) as { token: string };
     cookies().set("token", token, {
       httpOnly: false,
-      sameSite: "strict",
+      sameSite: "lax",
       path: "/dashboard",
-      maxAge: 60 * 60 * 24 * 1000,
+      maxAge: 86400 * 30,
     });
     await signIn("credentials", Object.fromEntries(formData));
   } catch (error) {

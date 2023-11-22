@@ -6,7 +6,6 @@ import { useState, useContext, useEffect } from "react";
 import { clsx } from "clsx";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { ContextProvider } from "@/components/ContextProvider";
 import UserContext from "@/context";
 import { useMessages } from "@/hooks/useMessages";
 import MainInput from "@/components/MainInput";

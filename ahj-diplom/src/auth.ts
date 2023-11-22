@@ -9,7 +9,6 @@ import { authConfig } from "./auth.config";
 async function getUser(email: string): Promise<User | null> {
   const prisma = new PrismaClient();
   try {
-    // sql<User>`SELECT * from USERS where email=${email}` такой запрос, но для prisma;
     return await prisma.user.findUnique({
       where: {
         email: email,

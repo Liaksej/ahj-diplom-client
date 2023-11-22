@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 export interface State {
   messageHistory: any[];
   file: File | null;
+  filePreview: string | ArrayBuffer | null;
 }
 
 type setMessageHistory = {
@@ -14,10 +15,15 @@ type setMessageHistory = {
 
 type setFile = {
   type: "setFile";
-  payload: File;
+  payload: File | null;
 };
 
-export type Action = setMessageHistory | setFile;
+type setFilePreview = {
+  type: "setFilePreview";
+  payload: string | ArrayBuffer | null;
+};
+
+export type Action = setMessageHistory | setFile | setFilePreview;
 
 const SOCKET_URL = `ws://127.0.0.1:8080/api/ws/?token=${Cookies.get("token")}`;
 
@@ -30,6 +36,8 @@ function reducer(state: State, action: Action) {
       };
     case "setFile":
       return { ...state, file: action.payload };
+    case "setFilePreview":
+      return { ...state, filePreview: action.payload };
     default:
       return state;
   }
@@ -39,6 +47,7 @@ export function useMessages() {
   const [state, dispatch] = useReducer(reducer, {
     messageHistory: [],
     file: null,
+    filePreview: null,
   });
 
   const { lastJsonMessage, sendJsonMessage, readyState } = useWebSocket(
