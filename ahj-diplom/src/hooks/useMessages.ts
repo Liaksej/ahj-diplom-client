@@ -23,7 +23,12 @@ type setFilePreview = {
   payload: string | ArrayBuffer | null;
 };
 
-export type Action = setMessageHistory | setFile | setFilePreview;
+type sendMessage = {
+  type: "sendMessage";
+  payload: any;
+};
+
+export type Action = setMessageHistory | setFile | setFilePreview | sendMessage;
 
 const SOCKET_URL = `ws://127.0.0.1:8080/api/ws/?token=${Cookies.get("token")}`;
 
@@ -32,7 +37,12 @@ function reducer(state: State, action: Action) {
     case "setMessageHistory":
       return {
         ...state,
-        messageHistory: [...action.payload],
+        messageHistory: [...state.messageHistory, ...action.payload],
+      };
+    case "sendMessage":
+      return {
+        ...state,
+        messageHistory: [...state.messageHistory, action.payload],
       };
     case "setFile":
       return { ...state, file: action.payload };
@@ -68,7 +78,7 @@ export function useMessages() {
         payload: lastJsonMessage as Array<any>,
       });
     }
-  }, [lastJsonMessage, dispatch]);
+  }, [lastJsonMessage]);
 
   useEffect(() => {
     if (readyState === ReadyState.CLOSED) {

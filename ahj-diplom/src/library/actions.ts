@@ -24,7 +24,7 @@ export async function authenticate(
       httpOnly: false,
       sameSite: "lax",
       path: "/dashboard",
-      maxAge: 86400 * 30,
+      maxAge: Date.now() + 24 * 60 * 60 * 1000,
     });
     await signIn("credentials", Object.fromEntries(formData));
   } catch (error) {

@@ -62,7 +62,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     console.log(context.state.messageHistory);
-  }, [context.state.messageHistory]);
+  }, []);
 
   return (
     <>
@@ -90,9 +90,9 @@ export default function Dashboard() {
         >
           <div className="h-full overflow-y-scroll bg-gray-50">
             <ul className="flex flex-col gap-2">
-              {context.state.messageHistory.map((message) => (
+              {context.state.messageHistory.map((message, index) => (
                 <div
-                  key={message.id}
+                  key={index}
                   className={clsx(
                     "border p-3 w-fit max-w-2xl rounded-2xl bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 shadow-sm",
                     {
@@ -117,6 +117,9 @@ export default function Dashboard() {
                   >
                     {message.text}
                   </Markdown>
+                  {message.photoUrl && (
+                    <img src={message.photoUrl} alt="photo" width={200} />
+                  )}
                 </div>
               ))}
             </ul>

@@ -2,6 +2,7 @@ import {
   ChangeEvent,
   FormEvent,
   ReactNode,
+  useCallback,
   useContext,
   useRef,
   useState,
@@ -47,24 +48,32 @@ export default function UploadButton({
     }
   };
 
-  const handleUpload = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsModalOpen(false);
-    const file = context.state.file;
-    if (connectionStatus === "Open" && file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const binary = e.target?.result;
-        sendJsonMessage({
-          type: "upload",
-          file: binary,
-          message: event.currentTarget.message.value,
-        });
-      };
-      reader.readAsBinaryString(file as Blob);
-      context.dispatch({ type: "setFile", payload: null });
-    }
-  };
+  const handleUpload = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setIsModalOpen(false);
+      const file = context.state.file;
+      const form = event.currentTarget;
+      const messageElement = form.elements.namedItem(
+        "message",
+      ) as HTMLTextAreaElement;
+      const message = messageElement.value;
+      if (connectionStatus === "Open" && file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const binary = e.target?.result;
+          sendJsonMessage({
+            type: "upload",
+            photo: { name: file.name, data: binary as string },
+            text: message,
+          });
+        };
+        reader.readAsBinaryString(file as Blob);
+        context.dispatch({ type: "setFile", payload: null });
+      }
+    },
+    [connectionStatus, sendJsonMessage, context],
+  );
 
   return (
     <>

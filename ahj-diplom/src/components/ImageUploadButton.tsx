@@ -17,7 +17,7 @@ export default function ImageUploadButton() {
         type="file"
         onChange={handlerImageChange}
       />
-      <UploadButton inputId={"hiddenImageInput"}>Image</UploadButton>
+      <UploadButton inputName={"hiddenImageInput"}>Image</UploadButton>
     </>
   );
 }

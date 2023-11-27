@@ -10,6 +10,7 @@ const UserContext = createContext<UserContextType>({
   state: {
     messageHistory: [],
     file: null,
+    filePreview: null,
   },
   dispatch: () => {},
 });
