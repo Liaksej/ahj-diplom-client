@@ -11,6 +11,7 @@ import UserContext from "@/context";
 import { createPortal } from "react-dom";
 import Modal from "@/components/Modal";
 import { useMessages } from "@/hooks/useMessages";
+import { sendMessageToServer } from "@/library/actions";
 
 export default function UploadButton({
   children,
@@ -21,7 +22,7 @@ export default function UploadButton({
 }) {
   const context = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { sendJsonMessage, connectionStatus } = useMessages();
+  const { connectionStatus } = useMessages();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -48,33 +49,6 @@ export default function UploadButton({
     }
   };
 
-  const handleUpload = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      setIsModalOpen(false);
-      const file = context.state.file;
-      const form = event.currentTarget;
-      const messageElement = form.elements.namedItem(
-        "message",
-      ) as HTMLTextAreaElement;
-      const message = messageElement.value;
-      if (connectionStatus === "Open" && file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const binary = e.target?.result;
-          sendJsonMessage({
-            type: "upload",
-            photo: { name: file.name, data: binary as string },
-            text: message,
-          });
-        };
-        reader.readAsBinaryString(file as Blob);
-        context.dispatch({ type: "setFile", payload: null });
-      }
-    },
-    [connectionStatus, sendJsonMessage, context],
-  );
-
   return (
     <>
       {isModalOpen &&
@@ -91,7 +65,11 @@ export default function UploadButton({
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-1 break-words truncate">
               {context.state.file?.name}
             </p>
-            <form onSubmit={(e) => handleUpload(e)}>
+            <form
+              action={(formData) =>
+                sendMessageToServer(formData, context.state.file)
+              }
+            >
               <textarea
                 className="min-h-[3rem] w-full border-4 dark:bg-gray-950"
                 placeholder="Write a message"

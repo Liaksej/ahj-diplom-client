@@ -2,6 +2,7 @@
 
 import { signIn, signOut } from "@/auth";
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
 export async function authenticate(
   prevState: string | undefined,
@@ -38,4 +39,24 @@ export async function authenticate(
 export async function signOutAll() {
   cookies().delete("token");
   await signOut();
+}
+
+export async function sendMessageToServer(
+  formData: FormData,
+  file?: File | null,
+) {
+  try {
+    const response = await fetch("http://127.0.0.1:8080/api/send-message", {
+      headers: {
+        Authorization: `Bearer ${cookies().get("token")}`,
+      },
+      method: "POST",
+      body: formData,
+    });
+    if (response.ok) {
+      return revalidatePath("/dashboard");
+    }
+  } catch (error) {
+    return { error };
+  }
 }

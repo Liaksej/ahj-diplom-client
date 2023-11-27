@@ -78,7 +78,7 @@ export function useMessages() {
         payload: lastJsonMessage as Array<any>,
       });
     }
-  }, [lastJsonMessage]);
+  }, [lastJsonMessage, dispatch]);
 
   useEffect(() => {
     if (readyState === ReadyState.CLOSED) {
@@ -98,6 +98,5 @@ export function useMessages() {
     state,
     dispatch,
     connectionStatus,
-    sendJsonMessage,
   };
 }

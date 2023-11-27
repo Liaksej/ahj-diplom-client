@@ -1,28 +1,37 @@
-import { ChangeEvent, KeyboardEvent, useCallback, useContext } from "react";
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  useCallback,
+  useContext,
+  useRef,
+} from "react";
 import UserContext from "@/context";
 import { useMessages } from "@/hooks/useMessages";
 import UploadButton from "@/components/UploadButton";
 import ImageUploadButton from "@/components/ImageUploadButton";
+import { sendMessageToServer } from "@/library/actions";
 
 export default function MainInput() {
   const context = useContext(UserContext);
-  const { sendJsonMessage, dispatch } = useMessages();
+  const { dispatch } = useMessages();
 
-  const handleClickSendMessage = useCallback(
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLTextAreaElement>) => {
-      event.preventDefault();
-      sendJsonMessage({
-        text: event.currentTarget.value,
-      });
+      if (event.key === "Enter" && event.metaKey) {
+        event.preventDefault();
+        formRef.current?.submit();
+      }
       event.currentTarget.value = "";
     },
-    [sendJsonMessage],
+    [formRef],
   );
 
   const handlerFileUpload = async () => {
+    // TODO: Переписать отправку файлов с помощью HTTP
     if (context.state.file) {
       try {
-        sendJsonMessage({ file: context.state.file });
       } catch (e) {
         console.log("Error uploading file: ", e);
       }
@@ -30,11 +39,10 @@ export default function MainInput() {
   };
 
   return (
-    <>
+    <form action={sendMessageToServer} ref={formRef}>
       <textarea
-        onKeyDown={(e) =>
-          e.key === "Enter" && e.metaKey && handleClickSendMessage(e)
-        }
+        name="text"
+        onKeyDown={handleKeyDown}
         className="min-h-[3rem] border-4 mb-1 dark:bg-gray-950"
         placeholder="Write a message"
       ></textarea>
@@ -44,6 +52,6 @@ export default function MainInput() {
         {/*<button>Audio</button>*/}
         <UploadButton inputName={"hiddenFileInput"}>Document</UploadButton>
       </div>
-    </>
+    </form>
   );
 }
