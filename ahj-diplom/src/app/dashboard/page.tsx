@@ -11,7 +11,7 @@ import { useMessages } from "@/hooks/useMessages";
 import MainInput from "@/components/MainInput";
 
 export default function Dashboard() {
-  const { connectionStatus } = useMessages();
+  const { connectionStatus, lastJsonMessage } = useMessages();
   const context = useContext(UserContext);
   const [sidebarState, setSidebarState] = useState(false);
 
@@ -61,8 +61,8 @@ export default function Dashboard() {
   // };
 
   useEffect(() => {
-    console.log(context.state.messageHistory);
-  }, []);
+    console.log(lastJsonMessage);
+  }, [lastJsonMessage]);
 
   return (
     <>

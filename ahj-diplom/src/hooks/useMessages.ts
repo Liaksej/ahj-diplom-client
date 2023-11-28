@@ -37,7 +37,7 @@ function reducer(state: State, action: Action) {
     case "setMessageHistory":
       return {
         ...state,
-        messageHistory: [...state.messageHistory, ...action.payload],
+        messageHistory: [...action.payload],
       };
     case "sendMessage":
       return {
@@ -60,23 +60,26 @@ export function useMessages() {
     filePreview: null,
   });
 
-  const { lastJsonMessage, sendJsonMessage, readyState } = useWebSocket(
-    SOCKET_URL,
-    {
-      onOpen: () => {
-        console.log("opened");
-      },
-      shouldReconnect: (closeEvent) => true,
-      onClose: () => console.log("closed"),
+  const { lastJsonMessage, readyState } = useWebSocket(SOCKET_URL, {
+    onOpen: () => {
+      console.log("opened");
     },
-  );
+    shouldReconnect: (closeEvent) => true,
+    onClose: () => console.log("closed"),
+  });
 
   useEffect(() => {
     if (lastJsonMessage !== null) {
-      dispatch({
-        type: "setMessageHistory",
-        payload: lastJsonMessage as Array<any>,
-      });
+      if (!Array.isArray(lastJsonMessage)) {
+        dispatch({ type: "sendMessage", payload: lastJsonMessage });
+      }
+
+      if (Array.isArray(lastJsonMessage)) {
+        dispatch({
+          type: "setMessageHistory",
+          payload: lastJsonMessage as Array<any>,
+        });
+      }
     }
   }, [lastJsonMessage, dispatch]);
 
@@ -98,5 +101,6 @@ export function useMessages() {
     state,
     dispatch,
     connectionStatus,
+    lastJsonMessage,
   };
 }

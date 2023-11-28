@@ -51,7 +51,7 @@ export async function sendMessageToServer(formData: FormData) {
       body: formData,
     });
     if (response.ok) {
-      return revalidatePath("/dashboard");
+      // return revalidatePath("/dashboard");
     } else {
       console.error(response);
     }

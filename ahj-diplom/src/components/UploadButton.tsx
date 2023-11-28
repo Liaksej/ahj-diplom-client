@@ -8,10 +8,12 @@ import {
   useState,
 } from "react";
 import UserContext from "@/context";
-import { createPortal } from "react-dom";
+import { createPortal, useFormState } from "react-dom";
 import Modal from "@/components/Modal";
 import { useMessages } from "@/hooks/useMessages";
 import { sendMessageToServer } from "@/library/actions";
+import { useFormStatus } from "react-dom";
+import { clsx } from "clsx";
 
 export default function UploadButton({
   children,
@@ -49,6 +51,18 @@ export default function UploadButton({
     }
   };
 
+  const handleFormSubmition = async (formData: FormData) => {
+    if (context.state.file) {
+      formData.append("file", context.state.file);
+      setIsModalOpen(false);
+      await sendMessageToServer(formData);
+      context.dispatch({ type: "setFile", payload: null });
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+    }
+  };
+
   return (
     <>
       {isModalOpen &&
@@ -65,15 +79,11 @@ export default function UploadButton({
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-1 break-words truncate">
               {context.state.file?.name}
             </p>
-            <form
-              action={(formData) =>
-                sendMessageToServer(formData, context.state.file)
-              }
-            >
+            <form action={handleFormSubmition}>
               <textarea
                 className="min-h-[3rem] w-full border-4 dark:bg-gray-950"
                 placeholder="Write a message"
-                name="message"
+                name="text"
               ></textarea>
               <div className="flex justify-end gap-x-2">
                 <button
@@ -83,12 +93,7 @@ export default function UploadButton({
                 >
                   Close
                 </button>
-                <button
-                  className="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-1 px-2 rounded"
-                  type="submit"
-                >
-                  Upload
-                </button>
+                <Upload />
               </div>
             </form>
           </Modal>,
@@ -105,5 +110,24 @@ export default function UploadButton({
         {children}
       </button>
     </>
+  );
+}
+
+function Upload() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      className={clsx(
+        "mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-1 px-2 rounded",
+        {
+          "bg-gray-400": pending,
+        },
+      )}
+      type="submit"
+      aria-disabled={pending}
+    >
+      {pending ? "Loading" : "Upload"}
+    </button>
   );
 }
