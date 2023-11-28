@@ -21,9 +21,9 @@ export default function MainInput() {
     (event: KeyboardEvent<HTMLTextAreaElement>) => {
       if (event.key === "Enter" && event.metaKey) {
         event.preventDefault();
-        formRef.current?.submit();
+        formRef.current?.requestSubmit();
+        event.currentTarget.value = "";
       }
-      event.currentTarget.value = "";
     },
     [formRef],
   );
@@ -43,7 +43,7 @@ export default function MainInput() {
       <textarea
         name="text"
         onKeyDown={handleKeyDown}
-        className="min-h-[3rem] border-4 mb-1 dark:bg-gray-950"
+        className="min-h-[3rem] w-full border-4 mb-1 dark:bg-gray-950"
         placeholder="Write a message"
       ></textarea>
       <div className="absolute bottom-5 right-3 flex gap-x-1">

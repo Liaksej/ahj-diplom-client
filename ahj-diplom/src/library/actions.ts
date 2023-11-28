@@ -41,20 +41,19 @@ export async function signOutAll() {
   await signOut();
 }
 
-export async function sendMessageToServer(
-  formData: FormData,
-  file?: File | null,
-) {
+export async function sendMessageToServer(formData: FormData) {
   try {
-    const response = await fetch("http://127.0.0.1:8080/api/send-message", {
+    const response = await fetch("http://127.0.0.1:8080/api/send-message/", {
       headers: {
-        Authorization: `Bearer ${cookies().get("token")}`,
+        Authorization: `Bearer ${cookies().get("token")?.value}`,
       },
       method: "POST",
       body: formData,
     });
     if (response.ok) {
       return revalidatePath("/dashboard");
+    } else {
+      console.error(response);
     }
   } catch (error) {
     return { error };
