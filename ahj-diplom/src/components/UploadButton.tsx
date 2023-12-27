@@ -1,12 +1,4 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  ReactNode,
-  useCallback,
-  useContext,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, ReactNode, useContext, useState } from "react";
 import UserContext from "@/context";
 import { createPortal, useFormState } from "react-dom";
 import Modal from "@/components/Modal";
@@ -18,15 +10,14 @@ import { clsx } from "clsx";
 export default function UploadButton({
   children,
   inputName,
+  inputRef,
 }: {
   children: ReactNode;
   inputName: string;
+  inputRef: any;
 }) {
   const context = useContext(UserContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { connectionStatus } = useMessages();
-
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const handlerFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -37,15 +28,19 @@ export default function UploadButton({
       reader.onloadend = function () {
         context.dispatch({ type: "setFilePreview", payload: reader.result });
       };
-      reader.readAsDataURL(file);
+      if (file.type.startsWith("image") || file.type.startsWith("video")) {
+        reader.readAsDataURL(file);
+      } else {
+        context.dispatch({ type: "setFilePreview", payload: null });
+      }
 
-      setIsModalOpen(true);
+      context.dispatch({ type: "setIsModalOpen", payload: true });
     }
   };
 
   const handleClose = () => {
     context.dispatch({ type: "setFile", payload: null });
-    setIsModalOpen(false);
+    context.dispatch({ type: "setIsModalOpen", payload: false });
     if (inputRef.current) {
       inputRef.current.value = "";
     }
@@ -55,9 +50,10 @@ export default function UploadButton({
     if (context.state.file) {
       formData.append("file", context.state.file);
       formData.append("fileName", context.state.file.name);
-      setIsModalOpen(false);
+      context.dispatch({ type: "setIsModalOpen", payload: false });
       await sendMessageToServer(formData);
       context.dispatch({ type: "setFile", payload: null });
+      context.dispatch({ type: "setFilePreview", payload: null });
       if (inputRef.current) {
         inputRef.current.value = "";
       }
@@ -66,7 +62,7 @@ export default function UploadButton({
 
   return (
     <>
-      {isModalOpen &&
+      {context.state.isModalOpen &&
         createPortal(
           <Modal>
             <h1 className="font-bold pb-1">File for upload</h1>

@@ -11,6 +11,7 @@ const UserContext = createContext<UserContextType>({
     messageHistory: [],
     file: null,
     filePreview: null,
+    isModalOpen: false,
   },
   dispatch: () => {},
 });

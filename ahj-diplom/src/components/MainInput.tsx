@@ -8,12 +8,10 @@ import {
 import UserContext from "@/context";
 import { useMessages } from "@/hooks/useMessages";
 import UploadButton from "@/components/UploadButton";
-import ImageUploadButton from "@/components/ImageUploadButton";
 import { sendMessageToServer } from "@/library/actions";
 
-export default function MainInput() {
+export default function MainInput({ inputRef }: { inputRef: any }) {
   const context = useContext(UserContext);
-  const { dispatch } = useMessages();
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -47,10 +45,18 @@ export default function MainInput() {
         placeholder="Write a message"
       ></textarea>
       <div className="absolute bottom-5 right-3 flex gap-x-1">
-        <UploadButton inputName={"hiddenImageInput"}>Image</UploadButton>
-        <UploadButton inputName={"hiddenVideoInput"}>Video</UploadButton>
-        <UploadButton inputName={"hiddenAudioInput"}>Audio</UploadButton>
-        <UploadButton inputName={"hiddenFileInput"}>Document</UploadButton>
+        <UploadButton inputRef={inputRef} inputName={"hiddenImageInput"}>
+          Image
+        </UploadButton>
+        <UploadButton inputRef={inputRef} inputName={"hiddenVideoInput"}>
+          Video
+        </UploadButton>
+        <UploadButton inputRef={inputRef} inputName={"hiddenAudioInput"}>
+          Audio
+        </UploadButton>
+        <UploadButton inputRef={inputRef} inputName={"hiddenFileInput"}>
+          Document
+        </UploadButton>
       </div>
     </form>
   );

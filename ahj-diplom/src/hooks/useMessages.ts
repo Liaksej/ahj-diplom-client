@@ -6,6 +6,7 @@ export interface State {
   messageHistory: any[];
   file: File | null;
   filePreview: string | ArrayBuffer | null;
+  isModalOpen: boolean;
 }
 
 type setMessageHistory = {
@@ -28,7 +29,17 @@ type sendMessage = {
   payload: any;
 };
 
-export type Action = setMessageHistory | setFile | setFilePreview | sendMessage;
+type setIsModalOpen = {
+  type: "setIsModalOpen";
+  payload: boolean;
+};
+
+export type Action =
+  | setMessageHistory
+  | setFile
+  | setFilePreview
+  | sendMessage
+  | setIsModalOpen;
 
 const SOCKET_URL = `ws://127.0.0.1:8080/api/ws/?email=${Cookies.get("email")}`;
 
@@ -48,6 +59,8 @@ function reducer(state: State, action: Action) {
       return { ...state, file: action.payload };
     case "setFilePreview":
       return { ...state, filePreview: action.payload };
+    case "setIsModalOpen":
+      return { ...state, isModalOpen: action.payload };
     default:
       return state;
   }
@@ -58,6 +71,7 @@ export function useMessages() {
     messageHistory: [],
     file: null,
     filePreview: null,
+    isModalOpen: false,
   });
 
   const { lastJsonMessage, readyState } = useWebSocket(SOCKET_URL, {
@@ -70,10 +84,6 @@ export function useMessages() {
 
   useEffect(() => {
     if (lastJsonMessage !== null) {
-      if (!Array.isArray(lastJsonMessage)) {
-        dispatch({ type: "sendMessage", payload: lastJsonMessage });
-      }
-
       if (Array.isArray(lastJsonMessage)) {
         console.log(lastJsonMessage);
         dispatch({
@@ -81,14 +91,18 @@ export function useMessages() {
           payload: lastJsonMessage as Array<any>,
         });
       }
+
+      if (!Array.isArray(lastJsonMessage)) {
+        dispatch({ type: "sendMessage", payload: lastJsonMessage });
+      }
     }
-  }, [lastJsonMessage, dispatch]);
+  }, [lastJsonMessage]);
 
   useEffect(() => {
     if (readyState === ReadyState.CLOSED) {
       dispatch({ type: "setMessageHistory", payload: [] });
     }
-  }, [readyState, dispatch]);
+  }, [readyState]);
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
@@ -102,6 +116,5 @@ export function useMessages() {
     state,
     dispatch,
     connectionStatus,
-    lastJsonMessage,
   };
 }
