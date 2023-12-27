@@ -129,7 +129,15 @@ export default function Dashboard() {
                   )}
                   {message.fileUrl &&
                     message.mime.startsWith("application/") && (
-                      <Link href={message.fileUrl}>{message.fileUrl}</Link>
+                      <Link
+                        href={`/download/?resource=${
+                          message.fileUrl
+                        }&fileName=${encodeURIComponent(
+                          message.fileName,
+                        )}&mime=${encodeURIComponent(message.mime)}`}
+                      >
+                        {message.fileName}
+                      </Link>
                     )}
                 </div>
               ))}

@@ -54,6 +54,7 @@ export default function UploadButton({
   const handleFormSubmition = async (formData: FormData) => {
     if (context.state.file) {
       formData.append("file", context.state.file);
+      formData.append("fileName", context.state.file.name);
       setIsModalOpen(false);
       await sendMessageToServer(formData);
       context.dispatch({ type: "setFile", payload: null });
