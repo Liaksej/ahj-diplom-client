@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
   return new Response(blob, {
     headers: {
       "Content-Type": query.mime,
-      "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(
+      "Content-Disposition": `inline; filename*=UTF-8''${encodeURIComponent(
         query.fileName,
       )}`,
     },

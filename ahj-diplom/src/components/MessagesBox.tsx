@@ -85,16 +85,48 @@ function MessagesBox({
               {message.text}
             </Markdown>
             {message.fileUrl && message.mime.startsWith("image/") && (
-              <img src={message.fileUrl} alt="photo" width={200} />
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`/download/?resource=${
+                  message.fileUrl
+                }&fileName=${encodeURIComponent(
+                  message.fileName,
+                )}&mime=${encodeURIComponent(message.mime)}`}
+              >
+                <img src={message.fileUrl} alt="photo" width={200} />
+              </Link>
             )}
             {message.fileUrl && message.mime.startsWith("video/") && (
-              <video src={message.fileUrl} controls={true} width={200} />
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`/download/?resource=${
+                  message.fileUrl
+                }&fileName=${encodeURIComponent(
+                  message.fileName,
+                )}&mime=${encodeURIComponent(message.mime)}`}
+              >
+                <video src={message.fileUrl} controls={true} width={200} />
+              </Link>
             )}
             {message.fileUrl && message.mime.startsWith("audio/") && (
-              <audio src={message.fileUrl} controls={true} />
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`/download/?resource=${
+                  message.fileUrl
+                }&fileName=${encodeURIComponent(
+                  message.fileName,
+                )}&mime=${encodeURIComponent(message.mime)}`}
+              >
+                <audio src={message.fileUrl} controls={true} />
+              </Link>
             )}
             {message.fileUrl && message.mime.startsWith("application/") && (
               <Link
+                target="_blank"
+                rel="noopener noreferrer"
                 href={`/download/?resource=${
                   message.fileUrl
                 }&fileName=${encodeURIComponent(
