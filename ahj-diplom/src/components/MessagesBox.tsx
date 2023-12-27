@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
-import { memo, MutableRefObject, useState } from "react";
+import { memo, MutableRefObject, useEffect, useState } from "react";
 import { DragEvent } from "react";
 
 function MessagesBox({
@@ -13,6 +13,7 @@ function MessagesBox({
   context: any;
 }) {
   const [dragOver, setDragOver] = useState(false);
+
   const onDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     console.log("Drag on");
@@ -58,7 +59,7 @@ function MessagesBox({
       style={{
         background: dragOver ? "#bbb" : "white",
       }}
-      className="h-full overflow-y-scroll bg-gray-50"
+      className="h-full overscroll-auto overflow-y-scroll bg-gray-50"
     >
       <ul className="flex flex-col gap-2">
         {context.state.messageHistory.map((message: any, index: string) => (
@@ -139,6 +140,7 @@ function MessagesBox({
           </div>
         ))}
       </ul>
+      <div id="scrollTo"></div>
     </div>
   );
 }

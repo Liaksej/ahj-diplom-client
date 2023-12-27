@@ -2,19 +2,29 @@
 
 import NavLinks from "@/components/NavLinks";
 import Search from "@/components/Search";
-import { useState, useContext, useRef } from "react";
+import { useState, useContext, useRef, useEffect, useCallback } from "react";
 import { clsx } from "clsx";
 import UserContext from "@/context";
 import { useMessages } from "@/hooks/useMessages";
 import MainInput from "@/components/MainInput";
 import MessagesBox from "@/components/MessagesBox";
+import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
 
 export default function Dashboard() {
-  const { connectionStatus } = useMessages();
+  const { connectionStatus, sendJsonMessage } = useMessages();
   const context = useContext(UserContext);
   const [sidebarState, setSidebarState] = useState(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    const cookie = Cookies.get("email");
+
+    if (!cookie) {
+      redirect("/");
+    }
+  }, []);
 
   return (
     <>

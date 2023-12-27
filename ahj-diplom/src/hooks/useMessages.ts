@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Cookies from "js-cookie";
 
@@ -48,7 +48,7 @@ function reducer(state: State, action: Action) {
     case "setMessageHistory":
       return {
         ...state,
-        messageHistory: [...action.payload],
+        messageHistory: [...action.payload, ...state.messageHistory],
       };
     case "sendMessage":
       return {
@@ -74,13 +74,16 @@ export function useMessages() {
     isModalOpen: false,
   });
 
-  const { lastJsonMessage, readyState } = useWebSocket(SOCKET_URL, {
-    onOpen: () => {
-      console.log("opened");
+  const { lastJsonMessage, readyState, sendJsonMessage } = useWebSocket(
+    SOCKET_URL,
+    {
+      onOpen: () => {
+        console.log("opened");
+      },
+      shouldReconnect: (closeEvent) => true,
+      onClose: () => console.log("closed"),
     },
-    shouldReconnect: (closeEvent) => true,
-    onClose: () => console.log("closed"),
-  });
+  );
 
   useEffect(() => {
     if (lastJsonMessage !== null) {
@@ -94,6 +97,10 @@ export function useMessages() {
 
       if (!Array.isArray(lastJsonMessage)) {
         dispatch({ type: "sendMessage", payload: lastJsonMessage });
+        const myElement = document.querySelector("#drop_zone ul:last-child");
+        if (myElement) {
+          myElement.scrollIntoView({ behavior: "smooth" });
+        }
       }
     }
   }, [lastJsonMessage]);
@@ -104,6 +111,13 @@ export function useMessages() {
     }
   }, [readyState]);
 
+  const getComments = useCallback(() => {
+    sendJsonMessage({
+      event: "getComments",
+      data: { offset: state.messageHistory.length },
+    });
+  }, [sendJsonMessage, state.messageHistory.length]);
+
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
     [ReadyState.OPEN]: "Open",
@@ -112,9 +126,35 @@ export function useMessages() {
     [ReadyState.UNINSTANTIATED]: "Uninstantiated",
   }[readyState];
 
+  useEffect(() => {
+    if (connectionStatus === "Open" && state.messageHistory.length === 0) {
+      getComments();
+      const myElement = document.getElementById("scrollTo");
+      if (myElement) {
+        myElement.scrollIntoView({ behavior: "smooth" });
+      }
+      return;
+    } else {
+      const container: HTMLDivElement | null = document.getElementById(
+        "drop_zone",
+      ) as HTMLDivElement;
+
+      const handleScroll = () => {
+        if (container?.scrollTop === -7 && state.messageHistory.length > 0) {
+          getComments();
+        }
+      };
+
+      container.addEventListener("scroll", handleScroll);
+
+      return () => container.removeEventListener("scroll", handleScroll);
+    }
+  }, [connectionStatus, getComments, state.messageHistory]);
+
   return {
     state,
     dispatch,
     connectionStatus,
+    sendJsonMessage,
   };
 }
