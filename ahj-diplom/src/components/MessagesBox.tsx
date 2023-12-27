@@ -3,6 +3,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
 import { memo, MutableRefObject, useState } from "react";
+import { DragEvent } from "react";
 
 function MessagesBox({
   inputRef,
@@ -12,7 +13,7 @@ function MessagesBox({
   context: any;
 }) {
   const [dragOver, setDragOver] = useState(false);
-  const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+  const onDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     console.log("Drag on");
     setDragOver(true);
@@ -23,7 +24,7 @@ function MessagesBox({
     setDragOver(false);
   };
 
-  const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  const onDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
 
     const files = event.dataTransfer?.files;
@@ -51,9 +52,9 @@ function MessagesBox({
   return (
     <div
       id="drop_zone"
-      onDragOver={(event: React.DragEvent<HTMLDivElement>) => onDragOver(event)}
+      onDragOver={(event: DragEvent<HTMLDivElement>) => onDragOver(event)}
       onDragLeave={onDragLeave}
-      onDrop={(event: React.DragEvent<HTMLDivElement>) => onDrop(event)}
+      onDrop={(event: DragEvent<HTMLDivElement>) => onDrop(event)}
       style={{
         background: dragOver ? "#bbb" : "white",
       }}
