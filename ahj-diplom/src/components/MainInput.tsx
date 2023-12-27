@@ -43,13 +43,13 @@ export default function MainInput() {
       <textarea
         name="text"
         onKeyDown={handleKeyDown}
-        className="min-h-[3rem] w-full border-4 mb-1 dark:bg-gray-950"
+        className="min-h-[3rem] w-full border-4 mb-1"
         placeholder="Write a message"
       ></textarea>
       <div className="absolute bottom-5 right-3 flex gap-x-1">
         <UploadButton inputName={"hiddenImageInput"}>Image</UploadButton>
-        {/*<button>Video</button>*/}
-        {/*<button>Audio</button>*/}
+        <UploadButton inputName={"hiddenVideoInput"}>Video</UploadButton>
+        <UploadButton inputName={"hiddenAudioInput"}>Audio</UploadButton>
         <UploadButton inputName={"hiddenFileInput"}>Document</UploadButton>
       </div>
     </form>

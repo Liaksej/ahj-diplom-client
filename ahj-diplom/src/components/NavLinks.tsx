@@ -1,5 +1,4 @@
 import { usePathname } from "next/navigation";
-import Logout from "@/components/Logout";
 import { Dispatch, SetStateAction } from "react";
 
 interface NavLinksProps {
@@ -17,7 +16,6 @@ export default function NavLinks({ setSidebarState }: NavLinksProps) {
       >
         Sidebar
       </button>
-      <Logout />
     </nav>
   );
 }

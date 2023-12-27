@@ -76,12 +76,12 @@ export default function UploadButton({
                 width="98"
               />
             )}
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1 break-words truncate">
+            <p className="text-sm text-gray-500 mb-1 break-words truncate">
               {context.state.file?.name}
             </p>
             <form action={handleFormSubmition}>
               <textarea
-                className="min-h-[3rem] w-full border-4 dark:bg-gray-950"
+                className="min-h-[3rem] w-full border-4"
                 placeholder="Write a message"
                 name="text"
               ></textarea>
@@ -105,6 +105,15 @@ export default function UploadButton({
         id={inputName}
         type="file"
         onChange={handlerFileChange}
+        accept={
+          inputName === "hiddenImageInput"
+            ? "image/*"
+            : inputName === "hiddenVideoInput"
+            ? "video/*"
+            : inputName === "hiddenAudioInput"
+            ? "audio/*"
+            : "application/*"
+        }
       />
       <button onClick={() => document.getElementById(inputName)?.click()}>
         {children}

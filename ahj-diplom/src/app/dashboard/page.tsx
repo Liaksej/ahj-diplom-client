@@ -9,6 +9,7 @@ import remarkGfm from "remark-gfm";
 import UserContext from "@/context";
 import { useMessages } from "@/hooks/useMessages";
 import MainInput from "@/components/MainInput";
+import Link from "next/link";
 
 export default function Dashboard() {
   const { connectionStatus, lastJsonMessage } = useMessages();
@@ -94,7 +95,7 @@ export default function Dashboard() {
                 <div
                   key={index}
                   className={clsx(
-                    "border p-3 w-fit max-w-2xl rounded-2xl bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 shadow-sm",
+                    "border p-3 w-fit max-w-2xl rounded-2xl bg-white shadow-sm",
                     {
                       "self-end": message.user.name === "Alexey",
                     },
@@ -117,9 +118,19 @@ export default function Dashboard() {
                   >
                     {message.text}
                   </Markdown>
-                  {message.photoUrl && (
-                    <img src={message.photoUrl} alt="photo" width={200} />
+                  {message.fileUrl && message.mime.startsWith("image/") && (
+                    <img src={message.fileUrl} alt="photo" width={200} />
                   )}
+                  {message.fileUrl && message.mime.startsWith("video/") && (
+                    <video src={message.fileUrl} controls={true} width={200} />
+                  )}
+                  {message.fileUrl && message.mime.startsWith("audio/") && (
+                    <audio src={message.fileUrl} controls={true} />
+                  )}
+                  {message.fileUrl &&
+                    message.mime.startsWith("application/") && (
+                      <Link href={message.fileUrl}>{message.fileUrl}</Link>
+                    )}
                 </div>
               ))}
             </ul>

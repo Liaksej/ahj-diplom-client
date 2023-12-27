@@ -30,7 +30,7 @@ type sendMessage = {
 
 export type Action = setMessageHistory | setFile | setFilePreview | sendMessage;
 
-const SOCKET_URL = `ws://127.0.0.1:8080/api/ws/?token=${Cookies.get("token")}`;
+const SOCKET_URL = `ws://127.0.0.1:8080/api/ws/?email=${Cookies.get("email")}`;
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
@@ -75,6 +75,7 @@ export function useMessages() {
       }
 
       if (Array.isArray(lastJsonMessage)) {
+        console.log(lastJsonMessage);
         dispatch({
           type: "setMessageHistory",
           payload: lastJsonMessage as Array<any>,

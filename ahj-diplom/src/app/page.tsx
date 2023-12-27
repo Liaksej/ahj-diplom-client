@@ -1,9 +1,9 @@
-import LoginForm from "@/components/LoginForm";
+import Loginform from "@/components/Loginform";
 
 export default function Home() {
   return (
     <div className="flex h-screen items-center justify-center">
-      <LoginForm />
+      <Loginform />
     </div>
   );
 }
