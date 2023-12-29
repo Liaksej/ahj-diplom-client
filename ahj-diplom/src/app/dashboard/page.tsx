@@ -2,18 +2,19 @@
 
 import NavLinks from "@/components/NavLinks";
 import Search from "@/components/Search";
-import { useState, useContext, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { clsx } from "clsx";
-import UserContext from "@/context";
 import { useMessages } from "@/hooks/useMessages";
 import MainInput from "@/components/MainInput";
 import MessagesBox from "@/components/MessagesBox";
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
+import UserContext from "@/context";
 
 export default function Dashboard() {
-  const { connectionStatus, sendJsonMessage } = useMessages();
-  const context = useContext(UserContext);
+  const {
+    state: { connectionStatus },
+  } = useContext(UserContext);
   const [sidebarState, setSidebarState] = useState(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -44,7 +45,7 @@ export default function Dashboard() {
             { "w-full": !sidebarState, "w-2/3": sidebarState },
           )}
         >
-          <MessagesBox inputRef={inputRef} context={context} />
+          <MessagesBox inputRef={inputRef} />
           <MainInput inputRef={inputRef} />
         </div>
         <aside

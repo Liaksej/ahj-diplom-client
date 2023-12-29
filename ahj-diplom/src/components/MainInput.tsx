@@ -62,8 +62,8 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
           onEmojiClick={handleAddEmoji}
           style={{
             position: "absolute",
-            bottom: "5rem",
-            right: "2rem",
+            bottom: "5.7rem",
+            right: "1.5rem",
           }}
         />
       )}

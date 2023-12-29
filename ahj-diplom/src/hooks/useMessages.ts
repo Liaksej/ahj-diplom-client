@@ -7,6 +7,8 @@ export interface State {
   file: File | null;
   filePreview: string | ArrayBuffer | null;
   isModalOpen: boolean;
+  searchParam?: string | null;
+  connectionStatus: string;
 }
 
 type setMessageHistory = {
@@ -34,14 +36,24 @@ type setIsModalOpen = {
   payload: boolean;
 };
 
+type setSearchParam = {
+  type: "setSearchParam";
+  payload: string;
+};
+
+type connectionStatus = {
+  type: "connectionStatus";
+  payload: string;
+};
+
 export type Action =
   | setMessageHistory
   | setFile
   | setFilePreview
   | sendMessage
-  | setIsModalOpen;
-
-const SOCKET_URL = `ws://127.0.0.1:8080/api/ws/?email=${Cookies.get("email")}`;
+  | setIsModalOpen
+  | setSearchParam
+  | connectionStatus;
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
@@ -61,6 +73,10 @@ function reducer(state: State, action: Action) {
       return { ...state, filePreview: action.payload };
     case "setIsModalOpen":
       return { ...state, isModalOpen: action.payload };
+    case "setSearchParam":
+      return { ...state, searchParam: action.payload };
+    case "connectionStatus":
+      return { ...state, connectionStatus: action.payload };
     default:
       return state;
   }
@@ -72,10 +88,27 @@ export function useMessages() {
     file: null,
     filePreview: null,
     isModalOpen: false,
+    searchParam: null,
+    connectionStatus: "Connecting",
   });
 
+  const queryParams = {
+    email: Cookies.get("email") as string,
+    q: state.searchParam || null,
+  };
+
+  const SOCKET_URL = new URL("ws://127.0.0.1:8080/api/ws/");
+
+  if (queryParams) {
+    Object.entries(queryParams).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        SOCKET_URL.searchParams.append(key, value.toString());
+      }
+    });
+  }
+
   const { lastJsonMessage, readyState, sendJsonMessage } = useWebSocket(
-    SOCKET_URL,
+    SOCKET_URL.toString(),
     {
       onOpen: () => {
         console.log("opened");
@@ -118,16 +151,24 @@ export function useMessages() {
     });
   }, [sendJsonMessage, state.messageHistory.length]);
 
-  const connectionStatus = {
-    [ReadyState.CONNECTING]: "Connecting",
-    [ReadyState.OPEN]: "Open",
-    [ReadyState.CLOSING]: "Closing",
-    [ReadyState.CLOSED]: "Closed",
-    [ReadyState.UNINSTANTIATED]: "Uninstantiated",
-  }[readyState];
+  useEffect(() => {
+    dispatch({
+      type: "connectionStatus",
+      payload: {
+        [ReadyState.CONNECTING]: "Connecting",
+        [ReadyState.OPEN]: "Open",
+        [ReadyState.CLOSING]: "Closing",
+        [ReadyState.CLOSED]: "Closed",
+        [ReadyState.UNINSTANTIATED]: "Uninstantiated",
+      }[readyState],
+    });
+  }, [readyState]);
 
   useEffect(() => {
-    if (connectionStatus === "Open" && state.messageHistory.length === 0) {
+    if (
+      state.connectionStatus === "Open" &&
+      state.messageHistory.length === 0
+    ) {
       getComments();
       const myElement = document.getElementById("scrollTo");
       if (myElement) {
@@ -149,12 +190,11 @@ export function useMessages() {
 
       return () => container.removeEventListener("scroll", handleScroll);
     }
-  }, [connectionStatus, getComments, state.messageHistory]);
+  }, [state.connectionStatus, getComments, state.messageHistory]);
 
   return {
     state,
     dispatch,
-    connectionStatus,
     sendJsonMessage,
   };
 }

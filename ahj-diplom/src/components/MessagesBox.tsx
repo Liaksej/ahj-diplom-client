@@ -2,17 +2,20 @@ import { clsx } from "clsx";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
-import { memo, MutableRefObject, useEffect, useState } from "react";
+import { memo, MutableRefObject, useContext, useEffect, useState } from "react";
 import { DragEvent } from "react";
+import UserContext from "@/context";
 
 function MessagesBox({
   inputRef,
-  context,
 }: {
   inputRef: MutableRefObject<HTMLInputElement | null>;
-  context: any;
 }) {
   const [dragOver, setDragOver] = useState(false);
+  const {
+    dispatch,
+    state: { messageHistory },
+  } = useContext(UserContext);
 
   const onDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -31,10 +34,10 @@ function MessagesBox({
     const files = event.dataTransfer?.files;
 
     if (files && files[0] && inputRef.current) {
-      context.dispatch({ type: "setFile", payload: files[0] });
+      dispatch({ type: "setFile", payload: files[0] });
       const reader = new FileReader();
       reader.onloadend = function () {
-        context.dispatch({ type: "setFilePreview", payload: reader.result });
+        dispatch({ type: "setFilePreview", payload: reader.result });
       };
       if (
         files[0].type.startsWith("image") ||
@@ -42,9 +45,9 @@ function MessagesBox({
       ) {
         reader.readAsDataURL(files[0]);
       } else {
-        context.dispatch({ type: "setFilePreview", payload: null });
+        dispatch({ type: "setFilePreview", payload: null });
       }
-      context.dispatch({ type: "setIsModalOpen", payload: true });
+      dispatch({ type: "setIsModalOpen", payload: true });
     }
 
     setDragOver(false);
@@ -62,9 +65,9 @@ function MessagesBox({
       className="h-full overscroll-auto overflow-y-scroll bg-gray-50"
     >
       <ul className="flex flex-col gap-2">
-        {context.state.messageHistory.map((message: any, index: string) => (
+        {messageHistory.map((message: any) => (
           <div
-            key={index}
+            key={message.id}
             className={clsx(
               "border p-3 w-fit max-w-2xl rounded-2xl bg-white shadow-sm",
               {
