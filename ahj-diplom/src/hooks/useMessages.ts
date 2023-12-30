@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Cookies from "js-cookie";
 
@@ -85,11 +85,6 @@ export function useMessages() {
     },
   );
 
-  // Clean up messages history on search
-  useEffect(() => {
-    dispatch({ type: "cleanMessageHistory", payload: [] });
-  }, [state.searchParam]);
-
   // Fetch messages from server
   const fetchMessages = useCallback(() => {
     sendJsonMessage({
@@ -100,6 +95,11 @@ export function useMessages() {
       },
     });
   }, [sendJsonMessage, state.messageHistory.length, state.searchParam]);
+
+  // Clean up messages history on search
+  useEffect(() => {
+    dispatch({ type: "cleanMessageHistory", payload: [] });
+  }, [state.searchParam]);
 
   // Request new messages on start & scroll
   useEffect(() => {
