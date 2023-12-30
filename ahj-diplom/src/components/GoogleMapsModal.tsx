@@ -1,12 +1,19 @@
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import { SetStateAction, useEffect, useState, Dispatch, useRef } from "react";
+import {
+  SetStateAction,
+  useEffect,
+  useState,
+  Dispatch,
+  useRef,
+  MutableRefObject,
+} from "react";
 
 export default function GoogleMapsModal({
   setIsGeoModalOpen,
   geoDataRef,
 }: {
   setIsGeoModalOpen: Dispatch<SetStateAction<boolean>>;
-  geoDataRef: { current: { lat: number; lng: number; place: string } };
+  geoDataRef: MutableRefObject<{ lat: number; lng: number; place: string }>;
 }) {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -25,20 +32,45 @@ export default function GoogleMapsModal({
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        setLatLng({
+        const latLon = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
-        });
+        };
+        setLatLng(latLon);
       });
     } else {
-      setLatLng({ lat: 37.7749, lng: -122.4194 });
+      const defaultLatLng = { lat: 37.7749, lng: -122.4194 };
+      setLatLng(defaultLatLng);
     }
   }, []);
+
+  useEffect(() => {
+    if (!isLoaded || !latLng) {
+      return;
+    }
+    setMarkerLatLng(latLng);
+
+    const geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode(
+      { location: { lat: latLng.lat, lng: latLng.lng } },
+      (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK) {
+          if (results && results.length > 0) {
+            placeRef.current = results[0].formatted_address;
+          } else {
+            console.log("No results found");
+          }
+        } else {
+          console.log("Geocoder failed due to: " + status);
+        }
+      },
+    );
+  }, [isLoaded, latLng]);
 
   function handleMapClick(event: google.maps.MapMouseEvent) {
     if (event.latLng) {
       const { lat, lng } = event.latLng;
-      console.log("Coordinates: ", lat(), lng());
       setMarkerLatLng({ lat: lat(), lng: lng() });
 
       const geocoder = new google.maps.Geocoder();
@@ -48,8 +80,7 @@ export default function GoogleMapsModal({
         (results, status) => {
           if (status === google.maps.GeocoderStatus.OK) {
             if (results && results.length > 0) {
-              console.log(results[0].formatted_address);
-              placeRef.current = results[0].formatted_address;
+              placeRef.current = results[0].formatted_address.toString();
             } else {
               console.log("No results found");
             }
@@ -65,26 +96,18 @@ export default function GoogleMapsModal({
     if (!markerLatLng) {
       return;
     }
-    if (placeRef.current) {
-      geoDataRef.current = {
-        lat: markerLatLng.lat,
-        lng: markerLatLng.lng,
-        place: placeRef.current,
-      };
-    } else {
-      geoDataRef.current = {
-        lat: markerLatLng.lat,
-        lng: markerLatLng.lng,
-        place: "",
-      };
-    }
-    console.log("Saved");
+
+    geoDataRef.current = {
+      lat: Number(markerLatLng.lat),
+      lng: Number(markerLatLng.lng),
+      place: placeRef.current,
+    };
+
     setIsGeoModalOpen(false);
     placeRef.current = "";
   };
 
   const onClose = () => {
-    console.log("Closed");
     setIsGeoModalOpen(false);
     placeRef.current = "";
   };
@@ -106,7 +129,7 @@ export default function GoogleMapsModal({
       <GoogleMap
         mapContainerStyle={{ width: "50rem", height: "40rem" }}
         center={latLng}
-        zoom={13}
+        zoom={17}
         options={{
           zoomControl: true,
           streetViewControl: false,

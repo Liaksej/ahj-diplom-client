@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { MutableRefObject, ReactNode, useState } from "react";
 import Modal from "@/components/Modal";
 import { createPortal } from "react-dom";
 import GoogleMapsModal from "@/components/GoogleMapsModal";
@@ -8,7 +8,7 @@ export default function GeoButton({
   geoDataRef,
 }: {
   children: ReactNode;
-  geoDataRef: { current: { lat: number; lng: number; place: string } };
+  geoDataRef: MutableRefObject<{ lat: number; lng: number; place: string }>;
 }) {
   const [isGeoModalOpen, setIsGeoModalOpen] = useState(false);
   return (

@@ -44,7 +44,7 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
   };
 
   const handleSendMessageToServer = async (formData: FormData) => {
-    if (geoDataRef.current.lat !== 0) {
+    if (geoDataRef.current.lat > 0) {
       formData.append("geodata", JSON.stringify(geoDataRef.current));
       geoDataRef.current = { lat: 0, lng: 0, place: "" };
     }
