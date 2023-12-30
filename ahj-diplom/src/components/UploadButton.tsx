@@ -1,10 +1,12 @@
-import { ChangeEvent, ReactNode, useContext } from "react";
+import { ChangeEvent, ReactNode, useContext, useRef } from "react";
 import { createPortal } from "react-dom";
 import Modal from "@/components/Modal";
 import { sendMessageToServer } from "@/library/actions";
 import { useFormStatus } from "react-dom";
 import { clsx } from "clsx";
 import { FileUploadContext } from "@/context";
+import { MapPinIcon } from "@heroicons/react/24/outline";
+import GeoButton from "@/components/GeoButton";
 
 export default function UploadButton({
   children,
@@ -16,6 +18,12 @@ export default function UploadButton({
   inputRef: any;
 }) {
   const { stateFile, dispatchFile } = useContext(FileUploadContext);
+
+  const geoDataRef = useRef<{ lat: number; lng: number; place: string }>({
+    lat: 0,
+    lng: 0,
+    place: "",
+  });
 
   const handlerFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -48,6 +56,10 @@ export default function UploadButton({
     if (stateFile.file) {
       formData.append("file", stateFile.file);
       formData.append("fileName", stateFile.file.name);
+      if (geoDataRef.current.lat > 0) {
+        formData.append("geodata", JSON.stringify(geoDataRef.current));
+        geoDataRef.current = { lat: 0, lng: 0, place: "" };
+      }
       dispatchFile({ type: "setIsModalOpen", payload: false });
       await sendMessageToServer(formData);
       dispatchFile({ type: "setFile", payload: null });
@@ -75,11 +87,25 @@ export default function UploadButton({
               {stateFile.file?.name}
             </p>
             <form action={handleFormSubmit}>
-              <textarea
-                className="min-h-[3rem] w-full border-4"
-                placeholder="Write a message"
-                name="text"
-              ></textarea>
+              <div style={{ position: "relative" }}>
+                <textarea
+                  className="min-h-[3rem] w-full border-4"
+                  placeholder="Write a message"
+                  name="text"
+                ></textarea>
+                <div
+                  className="flex h-6 gap-x-2 content-center"
+                  style={{
+                    position: "absolute",
+                    bottom: "1rem",
+                    right: "0.5rem",
+                  }}
+                >
+                  <GeoButton geoDataRef={geoDataRef}>
+                    <MapPinIcon className="h-6 w-6 text-gray-600" />
+                  </GeoButton>
+                </div>
+              </div>
               <div className="flex justify-end gap-x-2">
                 <button
                   className="mt-2 bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-1 px-2 rounded"
@@ -92,7 +118,7 @@ export default function UploadButton({
               </div>
             </form>
           </Modal>,
-          document.body,
+          document.getElementById("drop_zone") as HTMLElement,
         )}
       <input
         ref={inputRef}
