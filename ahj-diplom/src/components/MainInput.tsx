@@ -8,10 +8,12 @@ import EmojiPicker from "emoji-picker-react";
 import {
   FaceSmileIcon,
   FilmIcon,
+  MapPinIcon,
   MicrophoneIcon,
   PaperClipIcon,
   PhotoIcon,
 } from "@heroicons/react/24/outline";
+import GeoButton from "@/components/GeoButton";
 
 export default function MainInput({ inputRef }: { inputRef: any }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -66,6 +68,9 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
         <Emoji setShowEmojiPicker={setShowEmojiPicker}>
           <FaceSmileIcon className="h-6 w-6 text-gray-600" />
         </Emoji>
+        <GeoButton>
+          <MapPinIcon className="h-6 w-6 text-gray-600" />
+        </GeoButton>
         <UploadButton inputRef={inputRef} inputName={"hiddenImageInput"}>
           <PhotoIcon className="h-6 w-6 text-gray-600" />
         </UploadButton>
