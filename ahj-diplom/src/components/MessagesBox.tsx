@@ -103,30 +103,40 @@ function MessagesBox({
               </Link>
             )}
             {message.fileUrl && message.mime.startsWith("video/") && (
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`/download/?resource=${
-                  message.fileUrl
-                }&fileName=${encodeURIComponent(
-                  message.fileName,
-                )}&mime=${encodeURIComponent(message.mime)}`}
-              >
-                <video src={message.fileUrl} controls={true} width={200} />
-              </Link>
+              <>
+                <video controls={true} width={200}>
+                  <source src={message.fileUrl} type={message.mime} />
+                </video>
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`/download/?resource=${
+                    message.fileUrl
+                  }&fileName=${encodeURIComponent(
+                    message.fileName,
+                  )}&mime=${encodeURIComponent(message.mime)}`}
+                >
+                  Dowload
+                </Link>
+              </>
             )}
             {message.fileUrl && message.mime.startsWith("audio/") && (
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`/download/?resource=${
-                  message.fileUrl
-                }&fileName=${encodeURIComponent(
-                  message.fileName,
-                )}&mime=${encodeURIComponent(message.mime)}`}
-              >
-                <audio src={message.fileUrl} controls={true} />
-              </Link>
+              <>
+                <audio controls={true}>
+                  <source src={message.fileUrl} type={message.mime} />
+                </audio>
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`/download/?resource=${
+                    message.fileUrl
+                  }&fileName=${encodeURIComponent(
+                    message.fileName,
+                  )}&mime=${encodeURIComponent(message.mime)}`}
+                >
+                  Dowload
+                </Link>
+              </>
             )}
             {message.fileUrl && message.mime.startsWith("application/") && (
               <Link
