@@ -1,5 +1,5 @@
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import { SetStateAction, useEffect, useState, Dispatch } from "react";
+import { SetStateAction, useEffect, useState, Dispatch, useRef } from "react";
 
 export default function GoogleMapsModal({
   setIsGeoModalOpen,
@@ -17,6 +17,8 @@ export default function GoogleMapsModal({
     lat: number;
     lng: number;
   } | null>(null);
+
+  const placeRef = useRef<string>("");
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -36,17 +38,45 @@ export default function GoogleMapsModal({
       const { lat, lng } = event.latLng;
       console.log("Coordinates: ", lat(), lng());
       setMarkerLatLng({ lat: lat(), lng: lng() });
+
+      const geocoder = new google.maps.Geocoder();
+
+      geocoder.geocode(
+        { location: { lat: lat(), lng: lng() } },
+        (results, status) => {
+          if (status === google.maps.GeocoderStatus.OK) {
+            if (results && results.length > 0) {
+              console.log(results[0].formatted_address);
+              placeRef.current = results[0].formatted_address;
+            } else {
+              console.log("No results found");
+            }
+          } else {
+            console.log("Geocoder failed due to: " + status);
+          }
+        },
+      );
     }
   }
 
   const onSave = () => {
+    if (!markerLatLng) {
+      return;
+    }
+    if (placeRef.current) {
+      console.log(placeRef.current + JSON.stringify(markerLatLng));
+    } else {
+      console.log(JSON.stringify(markerLatLng));
+    }
     console.log("Saved");
     setIsGeoModalOpen(false);
+    placeRef.current = "";
   };
 
   const onClose = () => {
     console.log("Closed");
     setIsGeoModalOpen(false);
+    placeRef.current = "";
   };
 
   return latLng && isLoaded ? (
