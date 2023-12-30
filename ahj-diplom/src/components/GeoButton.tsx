@@ -3,18 +3,27 @@ import Modal from "@/components/Modal";
 import { createPortal } from "react-dom";
 import GoogleMapsModal from "@/components/GoogleMapsModal";
 
-export default function GeoButton({ children }: { children: ReactNode }) {
+export default function GeoButton({
+  children,
+  geoDataRef,
+}: {
+  children: ReactNode;
+  geoDataRef: { current: { lat: number; lng: number; place: string } };
+}) {
   const [isGeoModalOpen, setIsGeoModalOpen] = useState(false);
   return (
     <>
       {isGeoModalOpen &&
         createPortal(
           <Modal>
-            <GoogleMapsModal setIsGeoModalOpen={setIsGeoModalOpen} />
+            <GoogleMapsModal
+              setIsGeoModalOpen={setIsGeoModalOpen}
+              geoDataRef={geoDataRef}
+            />
           </Modal>,
           document.getElementById("drop_zone") as HTMLElement,
         )}
-      <button onClick={() => setIsGeoModalOpen((prev) => !prev)}>
+      <button type="button" onClick={() => setIsGeoModalOpen((prev) => !prev)}>
         {children}
       </button>
     </>

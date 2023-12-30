@@ -110,7 +110,10 @@ export default function UploadButton({
             : "application/*"
         }
       />
-      <button onClick={() => document.getElementById(inputName)?.click()}>
+      <button
+        type="button"
+        onClick={() => document.getElementById(inputName)?.click()}
+      >
         {children}
       </button>
     </>

@@ -3,8 +3,10 @@ import { SetStateAction, useEffect, useState, Dispatch, useRef } from "react";
 
 export default function GoogleMapsModal({
   setIsGeoModalOpen,
+  geoDataRef,
 }: {
   setIsGeoModalOpen: Dispatch<SetStateAction<boolean>>;
+  geoDataRef: { current: { lat: number; lng: number; place: string } };
 }) {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -64,9 +66,17 @@ export default function GoogleMapsModal({
       return;
     }
     if (placeRef.current) {
-      console.log(placeRef.current + JSON.stringify(markerLatLng));
+      geoDataRef.current = {
+        lat: markerLatLng.lat,
+        lng: markerLatLng.lng,
+        place: placeRef.current,
+      };
     } else {
-      console.log(JSON.stringify(markerLatLng));
+      geoDataRef.current = {
+        lat: markerLatLng.lat,
+        lng: markerLatLng.lng,
+        place: "",
+      };
     }
     console.log("Saved");
     setIsGeoModalOpen(false);

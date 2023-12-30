@@ -151,6 +151,13 @@ function MessagesBox({
                 {message.fileName}
               </Link>
             )}
+            {message.geoData && (
+              <p className="text-sm text-gray-400">
+                {message.geoData.place !== ""
+                  ? message.geoData.place
+                  : `${message.geoData.lat} ${message.geoData.lng}`}
+              </p>
+            )}
           </div>
         ))}
       </ul>

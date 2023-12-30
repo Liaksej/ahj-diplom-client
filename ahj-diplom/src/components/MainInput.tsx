@@ -20,6 +20,11 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
 
   const formRef = useRef<HTMLFormElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const geoDataRef = useRef<{ lat: number; lng: number; place: string }>({
+    lat: 0,
+    lng: 0,
+    place: "",
+  });
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -38,8 +43,16 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
     }
   };
 
+  const handleSendMessageToServer = async (formData: FormData) => {
+    if (geoDataRef.current.lat !== 0) {
+      formData.append("geodata", JSON.stringify(geoDataRef.current));
+      geoDataRef.current = { lat: 0, lng: 0, place: "" };
+    }
+    await sendMessageToServer(formData);
+  };
+
   return (
-    <form action={sendMessageToServer} ref={formRef} className="relative">
+    <form action={handleSendMessageToServer} ref={formRef} className="relative">
       {showEmojiPicker && (
         <EmojiPicker
           onEmojiClick={handleAddEmoji}
@@ -68,7 +81,7 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
         <Emoji setShowEmojiPicker={setShowEmojiPicker}>
           <FaceSmileIcon className="h-6 w-6 text-gray-600" />
         </Emoji>
-        <GeoButton>
+        <GeoButton geoDataRef={geoDataRef}>
           <MapPinIcon className="h-6 w-6 text-gray-600" />
         </GeoButton>
         <UploadButton inputRef={inputRef} inputName={"hiddenImageInput"}>

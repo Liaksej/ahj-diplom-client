@@ -11,7 +11,7 @@ export default function Emoji({
 }) {
   return (
     <div>
-      <button onClick={() => setShowEmojiPicker((prev) => !prev)}>
+      <button type="button" onClick={() => setShowEmojiPicker((prev) => !prev)}>
         {children}
       </button>
     </div>
