@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 import { useMessages } from "@/hooks/useMessages";
 
 export function ContextProvider({ children }: { children: ReactNode }) {
-  const { state, dispatch, connectionStatus } = useMessages();
+  const { state, dispatch } = useMessages();
   return (
     <UserContext.Provider value={{ state, dispatch }}>
       {children}

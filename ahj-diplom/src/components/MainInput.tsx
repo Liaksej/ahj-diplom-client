@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  KeyboardEvent,
-  useCallback,
-  useContext,
-  useRef,
-  useState,
-} from "react";
-import UserContext from "@/context";
+import { KeyboardEvent, useCallback, useRef, useState } from "react";
 import UploadButton from "@/components/UploadButton";
 import { sendMessageToServer } from "@/library/actions";
 import Emoji from "@/components/Emoji";
@@ -21,8 +14,6 @@ import {
 } from "@heroicons/react/24/outline";
 
 export default function MainInput({ inputRef }: { inputRef: any }) {
-  const context = useContext(UserContext);
-
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -39,21 +30,11 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
     [formRef],
   );
 
-  const handlerFileUpload = async () => {
-    // TODO: Переписать отправку файлов с помощью HTTP
-    if (context.state.file) {
-      try {
-      } catch (e) {
-        console.log("Error uploading file: ", e);
-      }
-    }
-  };
-
-  function handleAddEmoji(emoji: { emoji: string }) {
+  const handleAddEmoji = (emoji: { emoji: string }) => {
     if (textareaRef.current) {
       textareaRef.current.value += emoji.emoji;
     }
-  }
+  };
 
   return (
     <form action={sendMessageToServer} ref={formRef} className="relative">

@@ -1,11 +1,45 @@
-import { ChangeEvent, ReactNode, useContext, useState } from "react";
-import UserContext from "@/context";
-import { createPortal, useFormState } from "react-dom";
+import { ChangeEvent, ReactNode, useReducer } from "react";
+import { createPortal } from "react-dom";
 import Modal from "@/components/Modal";
-import { useMessages } from "@/hooks/useMessages";
 import { sendMessageToServer } from "@/library/actions";
 import { useFormStatus } from "react-dom";
 import { clsx } from "clsx";
+
+interface UploadButtonState {
+  filePreview: string | ArrayBuffer | null;
+  isModalOpen: boolean;
+  file: File | null;
+}
+
+type setFilePreview = {
+  type: "setFilePreview";
+  payload: string | ArrayBuffer | null;
+};
+
+type setIsModalOpen = {
+  type: "setIsModalOpen";
+  payload: boolean;
+};
+
+type setFile = {
+  type: "setFile";
+  payload: File | null;
+};
+
+type UploadButtonAction = setFilePreview | setIsModalOpen | setFile;
+
+function reducer(state: UploadButtonState, action: UploadButtonAction) {
+  switch (action.type) {
+    case "setFilePreview":
+      return { ...state, filePreview: action.payload };
+    case "setIsModalOpen":
+      return { ...state, isModalOpen: action.payload };
+    case "setFile":
+      return { ...state, file: action.payload };
+    default:
+      return state;
+  }
+}
 
 export default function UploadButton({
   children,
@@ -16,44 +50,47 @@ export default function UploadButton({
   inputName: string;
   inputRef: any;
 }) {
-  const context = useContext(UserContext);
-  const { connectionStatus } = useMessages();
+  const [state, dispatch] = useReducer(reducer, {
+    filePreview: null,
+    isModalOpen: false,
+    file: null,
+  });
 
   const handlerFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0];
-      context.dispatch({ type: "setFile", payload: event.target.files[0] });
+      dispatch({ type: "setFile", payload: event.target.files[0] });
 
       const reader = new FileReader();
       reader.onloadend = function () {
-        context.dispatch({ type: "setFilePreview", payload: reader.result });
+        dispatch({ type: "setFilePreview", payload: reader.result });
       };
       if (file.type.startsWith("image") || file.type.startsWith("video")) {
         reader.readAsDataURL(file);
       } else {
-        context.dispatch({ type: "setFilePreview", payload: null });
+        dispatch({ type: "setFilePreview", payload: null });
       }
 
-      context.dispatch({ type: "setIsModalOpen", payload: true });
+      dispatch({ type: "setIsModalOpen", payload: true });
     }
   };
 
   const handleClose = () => {
-    context.dispatch({ type: "setFile", payload: null });
-    context.dispatch({ type: "setIsModalOpen", payload: false });
+    dispatch({ type: "setFile", payload: null });
+    dispatch({ type: "setIsModalOpen", payload: false });
     if (inputRef.current) {
       inputRef.current.value = "";
     }
   };
 
-  const handleFormSubmition = async (formData: FormData) => {
-    if (context.state.file) {
-      formData.append("file", context.state.file);
-      formData.append("fileName", context.state.file.name);
-      context.dispatch({ type: "setIsModalOpen", payload: false });
+  const handleFormSubmit = async (formData: FormData) => {
+    if (state.file) {
+      formData.append("file", state.file);
+      formData.append("fileName", state.file.name);
+      dispatch({ type: "setIsModalOpen", payload: false });
       await sendMessageToServer(formData);
-      context.dispatch({ type: "setFile", payload: null });
-      context.dispatch({ type: "setFilePreview", payload: null });
+      dispatch({ type: "setFile", payload: null });
+      dispatch({ type: "setFilePreview", payload: null });
       if (inputRef.current) {
         inputRef.current.value = "";
       }
@@ -62,21 +99,21 @@ export default function UploadButton({
 
   return (
     <>
-      {context.state.isModalOpen &&
+      {state.isModalOpen &&
         createPortal(
           <Modal>
             <h1 className="font-bold pb-1">File for upload</h1>
-            {context.state.filePreview && (
+            {state.filePreview && (
               <img
-                src={context.state.filePreview as string}
+                src={state.filePreview as string}
                 alt="file preview"
                 width="98"
               />
             )}
             <p className="text-sm text-gray-500 mb-1 break-words truncate">
-              {context.state.file?.name}
+              {state.file?.name}
             </p>
-            <form action={handleFormSubmition}>
+            <form action={handleFormSubmit}>
               <textarea
                 className="min-h-[3rem] w-full border-4"
                 placeholder="Write a message"
