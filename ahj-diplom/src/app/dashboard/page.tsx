@@ -4,17 +4,17 @@ import NavLinks from "@/components/NavLinks";
 import Search from "@/components/Search";
 import { useState, useRef, useEffect, useContext } from "react";
 import { clsx } from "clsx";
-import { useMessages } from "@/hooks/useMessages";
 import MainInput from "@/components/MainInput";
 import MessagesBox from "@/components/MessagesBox";
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
-import UserContext from "@/context";
+import { WebSocketContext } from "@/context";
+import { FileUploadContextProvider } from "@/components/FileUploadContextProvider";
 
 export default function Dashboard() {
   const {
     state: { connectionStatus },
-  } = useContext(UserContext);
+  } = useContext(WebSocketContext);
   const [sidebarState, setSidebarState] = useState(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -45,8 +45,10 @@ export default function Dashboard() {
             { "w-full": !sidebarState, "w-2/3": sidebarState },
           )}
         >
-          <MessagesBox inputRef={inputRef} />
-          <MainInput inputRef={inputRef} />
+          <FileUploadContextProvider>
+            <MessagesBox inputRef={inputRef} />
+            <MainInput inputRef={inputRef} />
+          </FileUploadContextProvider>
         </div>
         <aside
           className={clsx(

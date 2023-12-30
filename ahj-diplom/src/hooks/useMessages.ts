@@ -109,7 +109,7 @@ export function useMessages() {
     ) {
       return fetchMessages();
     } else {
-      const container: HTMLDivElement | null = document.getElementById(
+      const container: HTMLDivElement = document.getElementById(
         "drop_zone",
       ) as HTMLDivElement;
 

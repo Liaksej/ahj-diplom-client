@@ -2,9 +2,9 @@ import { clsx } from "clsx";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
-import { memo, MutableRefObject, useContext, useEffect, useState } from "react";
+import { memo, MutableRefObject, useContext, useState } from "react";
 import { DragEvent } from "react";
-import UserContext from "@/context";
+import { FileUploadContext, WebSocketContext } from "@/context";
 
 function MessagesBox({
   inputRef,
@@ -13,9 +13,10 @@ function MessagesBox({
 }) {
   const [dragOver, setDragOver] = useState(false);
   const {
-    dispatch,
     state: { messageHistory },
-  } = useContext(UserContext);
+  } = useContext(WebSocketContext);
+
+  const { dispatchFile } = useContext(FileUploadContext);
 
   const onDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -34,10 +35,10 @@ function MessagesBox({
     const files = event.dataTransfer?.files;
 
     if (files && files[0] && inputRef.current) {
-      dispatch({ type: "setFile", payload: files[0] });
+      dispatchFile({ type: "setFile", payload: files[0] });
       const reader = new FileReader();
       reader.onloadend = function () {
-        dispatch({ type: "setFilePreview", payload: reader.result });
+        dispatchFile({ type: "setFilePreview", payload: reader.result });
       };
       if (
         files[0].type.startsWith("image") ||
@@ -45,9 +46,9 @@ function MessagesBox({
       ) {
         reader.readAsDataURL(files[0]);
       } else {
-        dispatch({ type: "setFilePreview", payload: null });
+        dispatchFile({ type: "setFilePreview", payload: null });
       }
-      dispatch({ type: "setIsModalOpen", payload: true });
+      dispatchFile({ type: "setIsModalOpen", payload: true });
     }
 
     setDragOver(false);

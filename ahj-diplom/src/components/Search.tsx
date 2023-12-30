@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import UserContext from "@/context";
+import { WebSocketContext } from "@/context";
 import { useDebouncedCallback } from "use-debounce";
 
 export default function Search() {
-  const { dispatch } = useContext(UserContext);
+  const { dispatch } = useContext(WebSocketContext);
 
   const handleSearch = useDebouncedCallback(
     (event) =>

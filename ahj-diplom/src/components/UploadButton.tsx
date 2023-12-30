@@ -1,45 +1,10 @@
-import { ChangeEvent, ReactNode, useReducer } from "react";
+import { ChangeEvent, ReactNode, useContext } from "react";
 import { createPortal } from "react-dom";
 import Modal from "@/components/Modal";
 import { sendMessageToServer } from "@/library/actions";
 import { useFormStatus } from "react-dom";
 import { clsx } from "clsx";
-
-interface UploadButtonState {
-  filePreview: string | ArrayBuffer | null;
-  isModalOpen: boolean;
-  file: File | null;
-}
-
-type setFilePreview = {
-  type: "setFilePreview";
-  payload: string | ArrayBuffer | null;
-};
-
-type setIsModalOpen = {
-  type: "setIsModalOpen";
-  payload: boolean;
-};
-
-type setFile = {
-  type: "setFile";
-  payload: File | null;
-};
-
-type UploadButtonAction = setFilePreview | setIsModalOpen | setFile;
-
-function reducer(state: UploadButtonState, action: UploadButtonAction) {
-  switch (action.type) {
-    case "setFilePreview":
-      return { ...state, filePreview: action.payload };
-    case "setIsModalOpen":
-      return { ...state, isModalOpen: action.payload };
-    case "setFile":
-      return { ...state, file: action.payload };
-    default:
-      return state;
-  }
-}
+import { FileUploadContext } from "@/context";
 
 export default function UploadButton({
   children,
@@ -50,47 +15,43 @@ export default function UploadButton({
   inputName: string;
   inputRef: any;
 }) {
-  const [state, dispatch] = useReducer(reducer, {
-    filePreview: null,
-    isModalOpen: false,
-    file: null,
-  });
+  const { stateFile, dispatchFile } = useContext(FileUploadContext);
 
   const handlerFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0];
-      dispatch({ type: "setFile", payload: event.target.files[0] });
+      dispatchFile({ type: "setFile", payload: event.target.files[0] });
 
       const reader = new FileReader();
       reader.onloadend = function () {
-        dispatch({ type: "setFilePreview", payload: reader.result });
+        dispatchFile({ type: "setFilePreview", payload: reader.result });
       };
       if (file.type.startsWith("image") || file.type.startsWith("video")) {
         reader.readAsDataURL(file);
       } else {
-        dispatch({ type: "setFilePreview", payload: null });
+        dispatchFile({ type: "setFilePreview", payload: null });
       }
 
-      dispatch({ type: "setIsModalOpen", payload: true });
+      dispatchFile({ type: "setIsModalOpen", payload: true });
     }
   };
 
   const handleClose = () => {
-    dispatch({ type: "setFile", payload: null });
-    dispatch({ type: "setIsModalOpen", payload: false });
+    dispatchFile({ type: "setFile", payload: null });
+    dispatchFile({ type: "setIsModalOpen", payload: false });
     if (inputRef.current) {
       inputRef.current.value = "";
     }
   };
 
   const handleFormSubmit = async (formData: FormData) => {
-    if (state.file) {
-      formData.append("file", state.file);
-      formData.append("fileName", state.file.name);
-      dispatch({ type: "setIsModalOpen", payload: false });
+    if (stateFile.file) {
+      formData.append("file", stateFile.file);
+      formData.append("fileName", stateFile.file.name);
+      dispatchFile({ type: "setIsModalOpen", payload: false });
       await sendMessageToServer(formData);
-      dispatch({ type: "setFile", payload: null });
-      dispatch({ type: "setFilePreview", payload: null });
+      dispatchFile({ type: "setFile", payload: null });
+      dispatchFile({ type: "setFilePreview", payload: null });
       if (inputRef.current) {
         inputRef.current.value = "";
       }
@@ -99,19 +60,19 @@ export default function UploadButton({
 
   return (
     <>
-      {state.isModalOpen &&
+      {stateFile.isModalOpen &&
         createPortal(
           <Modal>
             <h1 className="font-bold pb-1">File for upload</h1>
-            {state.filePreview && (
+            {stateFile.filePreview && (
               <img
-                src={state.filePreview as string}
+                src={stateFile.filePreview as string}
                 alt="file preview"
                 width="98"
               />
             )}
             <p className="text-sm text-gray-500 mb-1 break-words truncate">
-              {state.file?.name}
+              {stateFile.file?.name}
             </p>
             <form action={handleFormSubmit}>
               <textarea
