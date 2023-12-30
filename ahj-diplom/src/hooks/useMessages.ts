@@ -15,7 +15,6 @@ type setMessageHistory = {
 
 type cleanMessageHistory = {
   type: "cleanMessageHistory";
-  payload: [];
 };
 
 type sendMessage = {
@@ -98,7 +97,7 @@ export function useMessages() {
 
   // Clean up messages history on search
   useEffect(() => {
-    dispatch({ type: "cleanMessageHistory", payload: [] });
+    dispatch({ type: "cleanMessageHistory" });
   }, [state.searchParam]);
 
   // Request new messages on start & scroll
@@ -113,6 +112,9 @@ export function useMessages() {
         "drop_zone",
       ) as HTMLDivElement;
 
+      if (!container) {
+        return;
+      }
       const handleScroll = () => {
         if (container?.scrollTop === -7 && state.messageHistory.length > 0) {
           fetchMessages();
@@ -145,7 +147,7 @@ export function useMessages() {
   // Clean up messages history on connection close
   useEffect(() => {
     if (state.connectionStatus === "Closed") {
-      dispatch({ type: "setMessageHistory", payload: [] });
+      dispatch({ type: "cleanMessageHistory" });
     }
   }, [state.connectionStatus]);
 
