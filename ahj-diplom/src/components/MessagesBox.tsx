@@ -4,7 +4,7 @@ import remarkGfm from "remark-gfm";
 import Link from "next/link";
 import { memo, MutableRefObject, useContext, useState } from "react";
 import { DragEvent } from "react";
-import { FileUploadContext, WebSocketContext } from "@/context";
+import { DataUploadContext, WebSocketContext } from "@/context";
 
 function MessagesBox({
   inputRef,
@@ -16,7 +16,7 @@ function MessagesBox({
     state: { messageHistory },
   } = useContext(WebSocketContext);
 
-  const { dispatchFile } = useContext(FileUploadContext);
+  const { dispatchDataUpload } = useContext(DataUploadContext);
 
   const onDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -35,10 +35,10 @@ function MessagesBox({
     const files = event.dataTransfer?.files;
 
     if (files && files[0] && inputRef.current) {
-      dispatchFile({ type: "setFile", payload: files[0] });
+      dispatchDataUpload({ type: "setFile", payload: files[0] });
       const reader = new FileReader();
       reader.onloadend = function () {
-        dispatchFile({ type: "setFilePreview", payload: reader.result });
+        dispatchDataUpload({ type: "setFilePreview", payload: reader.result });
       };
       if (
         files[0].type.startsWith("image") ||
@@ -46,9 +46,9 @@ function MessagesBox({
       ) {
         reader.readAsDataURL(files[0]);
       } else {
-        dispatchFile({ type: "setFilePreview", payload: null });
+        dispatchDataUpload({ type: "setFilePreview", payload: null });
       }
-      dispatchFile({ type: "setIsModalOpen", payload: true });
+      dispatchDataUpload({ type: "setIsModalOpen", payload: true });
     }
 
     setDragOver(false);

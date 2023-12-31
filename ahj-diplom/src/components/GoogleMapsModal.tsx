@@ -6,15 +6,17 @@ import {
   Dispatch,
   useRef,
   MutableRefObject,
+  useContext,
 } from "react";
+import { DataUploadContext } from "@/context";
 
 export default function GoogleMapsModal({
   setIsGeoModalOpen,
-  geoDataRef,
 }: {
   setIsGeoModalOpen: Dispatch<SetStateAction<boolean>>;
-  geoDataRef: MutableRefObject<{ lat: number; lng: number; place: string }>;
 }) {
+  const { dispatchDataUpload } = useContext(DataUploadContext);
+
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
@@ -97,11 +99,14 @@ export default function GoogleMapsModal({
       return;
     }
 
-    geoDataRef.current = {
-      lat: Number(markerLatLng.lat),
-      lng: Number(markerLatLng.lng),
-      place: placeRef.current,
-    };
+    dispatchDataUpload({
+      type: "setGeoData",
+      payload: {
+        lat: markerLatLng.lat,
+        lng: markerLatLng.lng,
+        place: placeRef.current,
+      },
+    });
 
     setIsGeoModalOpen(false);
     placeRef.current = "";
@@ -110,6 +115,7 @@ export default function GoogleMapsModal({
   const onClose = () => {
     setIsGeoModalOpen(false);
     placeRef.current = "";
+    dispatchDataUpload({ type: "setGeoData", payload: null });
   };
 
   return latLng && isLoaded ? (

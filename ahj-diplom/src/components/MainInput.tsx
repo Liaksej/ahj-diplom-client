@@ -1,6 +1,12 @@
 "use client";
 
-import { KeyboardEvent, useCallback, useRef, useState } from "react";
+import {
+  KeyboardEvent,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 import UploadButton from "@/components/UploadButton";
 import { sendMessageToServer } from "@/library/actions";
 import Emoji from "@/components/Emoji";
@@ -14,17 +20,20 @@ import {
   PhotoIcon,
 } from "@heroicons/react/24/outline";
 import GeoButton from "@/components/GeoButton";
+import { clsx } from "clsx";
+import { DataUploadContext } from "@/context";
+import { MapPinIcon as MapPinIconSolid } from "@heroicons/react/24/solid";
 
 export default function MainInput({ inputRef }: { inputRef: any }) {
+  const {
+    stateDataUpload: { geoData },
+    dispatchDataUpload,
+  } = useContext(DataUploadContext);
+
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const formRef = useRef<HTMLFormElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const geoDataRef = useRef<{ lat: number; lng: number; place: string }>({
-    lat: 0,
-    lng: 0,
-    place: "",
-  });
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -44,9 +53,9 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
   };
 
   const handleSendMessageToServer = async (formData: FormData) => {
-    if (geoDataRef.current.lat > 0) {
-      formData.append("geodata", JSON.stringify(geoDataRef.current));
-      geoDataRef.current = { lat: 0, lng: 0, place: "" };
+    if (geoData) {
+      formData.append("geodata", JSON.stringify(geoData));
+      dispatchDataUpload({ type: "setGeoData", payload: null });
     }
     await sendMessageToServer(formData);
   };
@@ -81,8 +90,12 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
         <Emoji setShowEmojiPicker={setShowEmojiPicker}>
           <FaceSmileIcon className="h-6 w-6 text-gray-600" />
         </Emoji>
-        <GeoButton geoDataRef={geoDataRef}>
-          <MapPinIcon className="h-6 w-6 text-gray-600" />
+        <GeoButton>
+          {!geoData ? (
+            <MapPinIcon className="h-6 w-6 text-gray-600" />
+          ) : (
+            <MapPinIconSolid className="h-6 w-6 text-gray-600" />
+          )}
         </GeoButton>
         <UploadButton inputRef={inputRef} inputName={"hiddenImageInput"}>
           <PhotoIcon className="h-6 w-6 text-gray-600" />

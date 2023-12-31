@@ -1,11 +1,12 @@
-import { ChangeEvent, ReactNode, useContext, useRef } from "react";
+import { ChangeEvent, ReactNode, useContext } from "react";
 import { createPortal } from "react-dom";
 import Modal from "@/components/Modal";
 import { sendMessageToServer } from "@/library/actions";
 import { useFormStatus } from "react-dom";
 import { clsx } from "clsx";
-import { FileUploadContext } from "@/context";
+import { DataUploadContext } from "@/context";
 import { MapPinIcon } from "@heroicons/react/24/outline";
+import { MapPinIcon as MapPinIconSolid } from "@heroicons/react/24/solid";
 import GeoButton from "@/components/GeoButton";
 
 export default function UploadButton({
@@ -17,53 +18,47 @@ export default function UploadButton({
   inputName: string;
   inputRef: any;
 }) {
-  const { stateFile, dispatchFile } = useContext(FileUploadContext);
-
-  const geoDataRef = useRef<{ lat: number; lng: number; place: string }>({
-    lat: 0,
-    lng: 0,
-    place: "",
-  });
+  const { stateDataUpload, dispatchDataUpload } = useContext(DataUploadContext);
 
   const handlerFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0];
-      dispatchFile({ type: "setFile", payload: event.target.files[0] });
+      dispatchDataUpload({ type: "setFile", payload: event.target.files[0] });
 
       const reader = new FileReader();
       reader.onloadend = function () {
-        dispatchFile({ type: "setFilePreview", payload: reader.result });
+        dispatchDataUpload({ type: "setFilePreview", payload: reader.result });
       };
       if (file.type.startsWith("image") || file.type.startsWith("video")) {
         reader.readAsDataURL(file);
       } else {
-        dispatchFile({ type: "setFilePreview", payload: null });
+        dispatchDataUpload({ type: "setFilePreview", payload: null });
       }
 
-      dispatchFile({ type: "setIsModalOpen", payload: true });
+      dispatchDataUpload({ type: "setIsModalOpen", payload: true });
     }
   };
 
   const handleClose = () => {
-    dispatchFile({ type: "setFile", payload: null });
-    dispatchFile({ type: "setIsModalOpen", payload: false });
+    dispatchDataUpload({ type: "setFile", payload: null });
+    dispatchDataUpload({ type: "setIsModalOpen", payload: false });
     if (inputRef.current) {
       inputRef.current.value = "";
     }
   };
 
   const handleFormSubmit = async (formData: FormData) => {
-    if (stateFile.file) {
-      formData.append("file", stateFile.file);
-      formData.append("fileName", stateFile.file.name);
-      if (geoDataRef.current.lat > 0) {
-        formData.append("geodata", JSON.stringify(geoDataRef.current));
-        geoDataRef.current = { lat: 0, lng: 0, place: "" };
+    if (stateDataUpload.file) {
+      formData.append("file", stateDataUpload.file);
+      formData.append("fileName", stateDataUpload.file.name);
+      if (stateDataUpload.geoData) {
+        formData.append("geodata", JSON.stringify(stateDataUpload.geoData));
+        dispatchDataUpload({ type: "setGeoData", payload: null });
       }
-      dispatchFile({ type: "setIsModalOpen", payload: false });
+      dispatchDataUpload({ type: "setIsModalOpen", payload: false });
       await sendMessageToServer(formData);
-      dispatchFile({ type: "setFile", payload: null });
-      dispatchFile({ type: "setFilePreview", payload: null });
+      dispatchDataUpload({ type: "setFile", payload: null });
+      dispatchDataUpload({ type: "setFilePreview", payload: null });
       if (inputRef.current) {
         inputRef.current.value = "";
       }
@@ -72,19 +67,19 @@ export default function UploadButton({
 
   return (
     <>
-      {stateFile.isModalOpen &&
+      {stateDataUpload.isModalOpen &&
         createPortal(
           <Modal>
             <h1 className="font-bold pb-1">File for upload</h1>
-            {stateFile.filePreview && (
+            {stateDataUpload.filePreview && (
               <img
-                src={stateFile.filePreview as string}
+                src={stateDataUpload.filePreview as string}
                 alt="file preview"
                 width="98"
               />
             )}
             <p className="text-sm text-gray-500 mb-1 break-words truncate">
-              {stateFile.file?.name}
+              {stateDataUpload.file?.name}
             </p>
             <form action={handleFormSubmit}>
               <div style={{ position: "relative" }}>
@@ -101,8 +96,12 @@ export default function UploadButton({
                     right: "0.5rem",
                   }}
                 >
-                  <GeoButton geoDataRef={geoDataRef}>
-                    <MapPinIcon className="h-6 w-6 text-gray-600" />
+                  <GeoButton>
+                    {!stateDataUpload.geoData ? (
+                      <MapPinIcon className="h-6 w-6 text-gray-600" />
+                    ) : (
+                      <MapPinIconSolid className="h-6 w-6 text-gray-600" />
+                    )}
                   </GeoButton>
                 </div>
               </div>

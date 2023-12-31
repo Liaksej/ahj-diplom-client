@@ -1,18 +1,18 @@
 import { createContext, Dispatch } from "react";
 import { Action, State } from "@/hooks/useMessages";
 import {
-  FileUploadState,
+  DataUploadState,
   UploadButtonAction,
-} from "@/components/FileUploadContextProvider";
+} from "@/components/DataUploadContextProvider";
 
 interface UserContextType {
   state: State;
   dispatch: Dispatch<Action>;
 }
 
-interface FileUploadContextType {
-  stateFile: FileUploadState;
-  dispatchFile: Dispatch<UploadButtonAction>;
+interface DataUploadContextType {
+  stateDataUpload: DataUploadState;
+  dispatchDataUpload: Dispatch<UploadButtonAction>;
 }
 
 export const WebSocketContext = createContext<UserContextType>({
@@ -24,11 +24,12 @@ export const WebSocketContext = createContext<UserContextType>({
   dispatch: () => {},
 });
 
-export const FileUploadContext = createContext<FileUploadContextType>({
-  stateFile: {
+export const DataUploadContext = createContext<DataUploadContextType>({
+  stateDataUpload: {
     filePreview: null,
     isModalOpen: false,
     file: null,
+    geoData: null,
   },
-  dispatchFile: () => {},
+  dispatchDataUpload: () => {},
 });

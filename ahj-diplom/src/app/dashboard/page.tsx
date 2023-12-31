@@ -9,7 +9,7 @@ import MessagesBox from "@/components/MessagesBox";
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
 import { WebSocketContext } from "@/context";
-import { FileUploadContextProvider } from "@/components/FileUploadContextProvider";
+import { DataUploadContextProvider } from "@/components/DataUploadContextProvider";
 
 export default function Dashboard() {
   const {
@@ -45,10 +45,10 @@ export default function Dashboard() {
             { "w-full": !sidebarState, "w-2/3": sidebarState },
           )}
         >
-          <FileUploadContextProvider>
+          <DataUploadContextProvider>
             <MessagesBox inputRef={inputRef} />
             <MainInput inputRef={inputRef} />
-          </FileUploadContextProvider>
+          </DataUploadContextProvider>
         </div>
         <aside
           className={clsx(
