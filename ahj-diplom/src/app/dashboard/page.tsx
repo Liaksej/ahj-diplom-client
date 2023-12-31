@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
 import { WebSocketContext } from "@/context";
 import { DataUploadContextProvider } from "@/components/DataUploadContextProvider";
+import SideBar from "@/components/SideBar";
 
 export default function Dashboard() {
   const {
@@ -56,7 +57,7 @@ export default function Dashboard() {
             { "w-1/3": sidebarState, "w-0": !sidebarState },
           )}
         >
-          Sidebar
+          <SideBar />
         </aside>
       </main>
     </>

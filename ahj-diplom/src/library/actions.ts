@@ -4,13 +4,16 @@ import { cookies } from "next/headers";
 
 export async function sendMessageToServer(formData: FormData) {
   try {
-    const response = await fetch("http://127.0.0.1:8080/api/send-message/", {
-      method: "POST",
-      headers: {
-        Cookie: "email=" + cookies().get("email")?.value,
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/send-message/`,
+      {
+        method: "POST",
+        headers: {
+          Cookie: "email=" + cookies().get("email")?.value,
+        },
+        body: formData,
       },
-      body: formData,
-    });
+    );
     if (!response.ok) {
       console.error(response);
       return { error: response.statusText };
