@@ -1,11 +1,8 @@
 import { useSSE } from "@/hooks/useSSE";
 import Cookies from "js-cookie";
 import { useState } from "react";
-import PhotoTab from "@/components/sideBarComponents/PhotoTab";
 import MediaTab from "@/components/sideBarComponents/MediaTab";
-import AudioTab from "@/components/sideBarComponents/AudioTab";
-import VideoItem from "@/components/sideBarComponents/VideoItem";
-import PhotoItem from "@/components/sideBarComponents/PhotoItem";
+import FileTab from "@/components/sideBarComponents/FileTab";
 
 export default function SideBar() {
   const [currentTab, setCurrentTab] = useState("photo");
@@ -33,10 +30,12 @@ export default function SideBar() {
       {currentTab === "video" && (
         <MediaTab files={filterDataByMime("video")} mediaItem={"VideoItem"} />
       )}
-      {currentTab === "audio" && <AudioTab files={filterDataByMime("audio")} />}
-      {/*// {currentTab === "file" && (*/}
-      {/*//   <FileTab files={filterDataByMime("application")} />*/}
-      {/*// )}*/}
+      {currentTab === "audio" && (
+        <MediaTab files={filterDataByMime("audio")} mediaItem={"AudioItem"} />
+      )}
+      {currentTab === "file" && (
+        <FileTab files={filterDataByMime("application")} />
+      )}
     </div>
   );
 }
