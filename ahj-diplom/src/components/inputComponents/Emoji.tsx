@@ -1,5 +1,3 @@
-"use client";
-
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export default function Emoji({
