@@ -3,7 +3,7 @@ import { Action, State } from "@/hooks/useMessages";
 import {
   DataUploadState,
   UploadButtonAction,
-} from "@/components/DataUploadContextProvider";
+} from "@/components/contextProviders/DataUploadContextProvider";
 
 interface UserContextType {
   state: State;
@@ -20,6 +20,7 @@ export const WebSocketContext = createContext<UserContextType>({
     messageHistory: [],
     searchParam: "",
     connectionStatus: "Connecting",
+    newMessage: "",
   },
   dispatch: () => {},
 });

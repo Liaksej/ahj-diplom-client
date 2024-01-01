@@ -4,13 +4,13 @@ import NavLinks from "@/components/NavLinks";
 import Search from "@/components/Search";
 import { useState, useRef, useEffect, useContext } from "react";
 import { clsx } from "clsx";
-import MainInput from "@/components/MainInput";
+import MainInput from "@/components/inputComponents/MainInput";
 import MessagesBox from "@/components/MessagesBox";
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
 import { WebSocketContext } from "@/context";
-import { DataUploadContextProvider } from "@/components/DataUploadContextProvider";
-import SideBar from "@/components/SideBar";
+import { DataUploadContextProvider } from "@/components/contextProviders/DataUploadContextProvider";
+import SideBar from "@/components/sideBarComponents/SideBar";
 
 export default function Dashboard() {
   const {

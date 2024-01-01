@@ -2,7 +2,15 @@ import { clsx } from "clsx";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
-import { memo, MutableRefObject, useContext, useState } from "react";
+import React, {
+  Fragment,
+  memo,
+  MutableRefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { DragEvent } from "react";
 import { DataUploadContext, WebSocketContext } from "@/context";
 
@@ -13,10 +21,20 @@ function MessagesBox({
 }) {
   const [dragOver, setDragOver] = useState(false);
   const {
-    state: { messageHistory },
+    state: { messageHistory, newMessage },
   } = useContext(WebSocketContext);
 
   const { dispatchDataUpload } = useContext(DataUploadContext);
+
+  const nodeRef = useRef<HTMLDivElement>(null);
+
+  const topMessageRef = useRef<HTMLDivElement>(null);
+  const lastNewMessageRef = useRef<string>("");
+
+  useEffect(() => {
+    const element = nodeRef.current;
+    element?.scrollTo({ top: element.scrollHeight - 1, behavior: "smooth" });
+  }, [newMessage]);
 
   const onDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -57,17 +75,18 @@ function MessagesBox({
   return (
     <div
       id="drop_zone"
+      ref={nodeRef}
       onDragOver={(event: DragEvent<HTMLDivElement>) => onDragOver(event)}
       onDragLeave={onDragLeave}
       onDrop={(event: DragEvent<HTMLDivElement>) => onDrop(event)}
       style={{
         background: dragOver ? "#bbb" : "white",
       }}
-      className="h-full overscroll-auto overflow-y-scroll bg-gray-50"
+      className="h-full overflow-y-scroll bg-gray-50"
     >
       <ul className="flex flex-col gap-2">
-        {messageHistory.map((message: any) => (
-          <div
+        {messageHistory.map((message: any, index) => (
+          <li
             key={message.id}
             className={clsx(
               "border p-3 w-fit max-w-2xl rounded-2xl bg-white shadow-sm",
@@ -158,10 +177,9 @@ function MessagesBox({
                   : `${message.geoData.lat} ${message.geoData.lng}`}
               </p>
             )}
-          </div>
+          </li>
         ))}
       </ul>
-      <div id="scrollTo"></div>
     </div>
   );
 }

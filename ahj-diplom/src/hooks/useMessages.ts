@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useReducer } from "react";
+import { useCallback, useEffect, useReducer, useRef } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Cookies from "js-cookie";
 
 export interface State {
   messageHistory: any[];
+  newMessage: string;
   searchParam?: string | null;
   connectionStatus: string;
 }
@@ -32,12 +33,18 @@ type connectionStatus = {
   payload: string;
 };
 
+type setNewMessage = {
+  type: "setNewMessage";
+  payload: string;
+};
+
 export type Action =
   | setMessageHistory
   | sendMessage
   | setSearchParam
   | connectionStatus
-  | cleanMessageHistory;
+  | cleanMessageHistory
+  | setNewMessage;
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
@@ -57,9 +64,24 @@ function reducer(state: State, action: Action) {
       return { ...state, searchParam: action.payload };
     case "connectionStatus":
       return { ...state, connectionStatus: action.payload };
+    case "setNewMessage":
+      return { ...state, newMessage: action.payload };
     default:
       return state;
   }
+}
+
+function debounce(func: (...args: any[]) => any, delay: number) {
+  let timerId: ReturnType<typeof setTimeout> | null = null;
+  return (...args: any[]) => {
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(() => {
+      timerId = null;
+      func.apply(null, args);
+    }, delay);
+  };
 }
 
 export function useMessages() {
@@ -67,6 +89,7 @@ export function useMessages() {
     messageHistory: [],
     searchParam: null,
     connectionStatus: "Connecting",
+    newMessage: "",
   });
 
   const email = Cookies.get("email") as string;
@@ -112,20 +135,23 @@ export function useMessages() {
         "drop_zone",
       ) as HTMLDivElement;
 
-      if (!container) {
-        return;
-      }
-      const handleScroll = () => {
-        if (container?.scrollTop === -7 && state.messageHistory.length > 0) {
+      const handleScroll = debounce(() => {
+        if (container?.scrollTop === 0 && state.messageHistory.length > 0) {
           fetchMessages();
+          container?.scrollTo({
+            top: 80,
+            behavior: "smooth",
+          });
         }
-      };
+      }, 1000);
 
       container.addEventListener("scroll", handleScroll);
 
       return () => container.removeEventListener("scroll", handleScroll);
     }
-  }, [state.connectionStatus, fetchMessages, state.messageHistory]);
+  }, [state.connectionStatus, fetchMessages, state.messageHistory.length]);
+
+  const firstRender = useRef(true);
 
   // Add messages or message to message history
   useEffect(() => {
@@ -136,10 +162,21 @@ export function useMessages() {
           type: "setMessageHistory",
           payload: lastJsonMessage as Array<any>,
         });
+        if (firstRender.current) {
+          dispatch({
+            type: "setNewMessage",
+            payload: Math.random().toString() as string,
+          });
+          firstRender.current = false;
+        }
       }
 
       if (!Array.isArray(lastJsonMessage)) {
         dispatch({ type: "sendMessage", payload: lastJsonMessage });
+        dispatch({
+          type: "setNewMessage",
+          payload: Math.random().toString() as string,
+        });
       }
     }
   }, [lastJsonMessage]);

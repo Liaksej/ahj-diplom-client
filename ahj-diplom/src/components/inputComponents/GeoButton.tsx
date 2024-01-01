@@ -1,7 +1,7 @@
 import { MutableRefObject, ReactNode, useContext, useState } from "react";
 import Modal from "@/components/Modal";
 import { createPortal } from "react-dom";
-import GoogleMapsModal from "@/components/GoogleMapsModal";
+import GoogleMapsModal from "@/components/inputComponents/GoogleMapsModal";
 import { DataUploadContext } from "@/context";
 
 export default function GeoButton({ children }: { children: ReactNode }) {

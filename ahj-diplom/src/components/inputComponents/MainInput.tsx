@@ -7,9 +7,9 @@ import {
   useRef,
   useState,
 } from "react";
-import UploadButton from "@/components/UploadButton";
+import UploadButton from "@/components/inputComponents/UploadButton";
 import { sendMessageToServer } from "@/library/actions";
-import Emoji from "@/components/Emoji";
+import Emoji from "@/components/inputComponents/Emoji";
 import EmojiPicker from "emoji-picker-react";
 import {
   FaceSmileIcon,
@@ -19,7 +19,7 @@ import {
   PaperClipIcon,
   PhotoIcon,
 } from "@heroicons/react/24/outline";
-import GeoButton from "@/components/GeoButton";
+import GeoButton from "@/components/inputComponents/GeoButton";
 import { clsx } from "clsx";
 import { DataUploadContext } from "@/context";
 import { MapPinIcon as MapPinIconSolid } from "@heroicons/react/24/solid";

@@ -7,7 +7,7 @@ import { clsx } from "clsx";
 import { DataUploadContext } from "@/context";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { MapPinIcon as MapPinIconSolid } from "@heroicons/react/24/solid";
-import GeoButton from "@/components/GeoButton";
+import GeoButton from "@/components/inputComponents/GeoButton";
 
 export default function UploadButton({
   children,
