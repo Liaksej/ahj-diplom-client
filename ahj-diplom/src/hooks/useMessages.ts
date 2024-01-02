@@ -37,6 +37,10 @@ type setNewMessage = {
   type: "setNewMessage";
   payload: string;
 };
+type deleteMessage = {
+  type: "deleteMessage";
+  payload: string;
+};
 
 export type Action =
   | setMessageHistory
@@ -44,7 +48,8 @@ export type Action =
   | setSearchParam
   | connectionStatus
   | cleanMessageHistory
-  | setNewMessage;
+  | setNewMessage
+  | deleteMessage;
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
@@ -66,6 +71,13 @@ function reducer(state: State, action: Action) {
       return { ...state, connectionStatus: action.payload };
     case "setNewMessage":
       return { ...state, newMessage: action.payload };
+    case "deleteMessage":
+      return {
+        ...state,
+        messageHistory: state.messageHistory.filter(
+          (m) => m.id !== action.payload,
+        ),
+      };
     default:
       return state;
   }

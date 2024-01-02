@@ -13,6 +13,8 @@ import React, {
 } from "react";
 import { DragEvent } from "react";
 import { DataUploadContext, WebSocketContext } from "@/context";
+import DeleteButton from "@/components/DeleteButton";
+import { XCircleIcon } from "@heroicons/react/24/outline";
 
 function MessagesBox({
   inputRef,
@@ -95,6 +97,9 @@ function MessagesBox({
               },
             )}
           >
+            <DeleteButton id={message.id}>
+              <XCircleIcon className="w-5 h-5 text-red-500" />
+            </DeleteButton>
             <p className="text-gray-400 text-xs italic">{message.date}</p>
             <p className="text-gray-400 text-xs">{message.user.name}</p>
             <Markdown

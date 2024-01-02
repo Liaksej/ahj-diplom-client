@@ -6,18 +6,18 @@ export default function Spinner({
   height?: string;
 }) {
   return (
-    <div className={`w-[7rem] h-[7rem]`}>
+    <div style={{ height: height, width: width }}>
       <svg className="animate-spin" viewBox="0 0 100 100">
         <circle
           cx="50"
           cy="50"
-          r="17"
+          r="40"
           style={{
             maxWidth: 100,
             fill: "transparent",
             stroke: "gray",
             strokeDashoffset: 75,
-            strokeWidth: 3,
+            strokeWidth: 4,
             strokeDasharray: 166,
           }}
         />
