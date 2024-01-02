@@ -152,7 +152,7 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
       >
         <div className="flex gap-x-4 align-middle">
           <Emoji setShowEmojiPicker={setShowEmojiPicker}>
-            <FaceSmileIcon className="h-7 w-7 text-gray-500 hover:text-gray-600 rounded-full self-center" />
+            <FaceSmileIcon className="h-7 w-7 text-gray-500 self-center hover:text-yellow-500" />
           </Emoji>
           <SubmitButton />
         </div>

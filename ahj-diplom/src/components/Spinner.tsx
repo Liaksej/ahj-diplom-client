@@ -11,13 +11,13 @@ export default function Spinner({
         <circle
           cx="50"
           cy="50"
-          r="40"
+          r="22"
           style={{
             maxWidth: 100,
             fill: "transparent",
             stroke: "purple",
             strokeDashoffset: 75,
-            strokeWidth: 4,
+            strokeWidth: 3,
             strokeDasharray: 166,
           }}
         />

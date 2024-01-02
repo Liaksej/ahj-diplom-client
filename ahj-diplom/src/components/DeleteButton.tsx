@@ -25,19 +25,21 @@ export default function DeleteButton({
   return (
     <form action={deleteHandler}>
       <input type="hidden" name="id" value={id} />
-      <div className="flex flex-row-reverse space-x-2 items-center">
-        <button type="submit">{children}</button>
-        <SpinForDelete />
-      </div>
+      <ButtonSymbol>{children}</ButtonSymbol>
     </form>
   );
 }
 
-function SpinForDelete() {
+function ButtonSymbol({ children }: { children: ReactNode }) {
   const { pending } = useFormStatus();
   return (
-    <div className={clsx(!pending && "w-[1.1rem]")}>
-      {pending && <Spinner width="1.1rem" height="1.1rem" />}
+    <div
+      className={clsx(
+        "flex flex-row-reverse space-x-2 items-center",
+        pending && "cursor-not-allowed animate-spin",
+      )}
+    >
+      <button type="submit">{children}</button>
     </div>
   );
 }
