@@ -15,7 +15,7 @@ export default function Spinner({
           style={{
             maxWidth: 100,
             fill: "transparent",
-            stroke: "gray",
+            stroke: "purple",
             strokeDashoffset: 75,
             strokeWidth: 4,
             strokeDasharray: 166,

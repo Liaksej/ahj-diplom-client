@@ -20,7 +20,7 @@ export default function SideBar() {
 
   return (
     <div className="h-full pb-3 overflow-y-auto">
-      <div className="text-gray-700 flex w-full justify-between divide-x">
+      <div className="text-purple-950 flex w-full justify-between divide-x">
         <button
           className={clsx(
             "w-1/4 text-center",
@@ -71,7 +71,7 @@ export default function SideBar() {
         </button>
       </div>
 
-      <div className="bg-gray-100 h-full pt-2">
+      <div className="bg-gray-100 h-full pt-2 flex justify-center">
         {currentTab === "photo" && (
           <MediaTab files={filterDataByMime("image")} mediaItem={"PhotoItem"} />
         )}

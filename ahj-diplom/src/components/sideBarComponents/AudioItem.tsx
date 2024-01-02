@@ -3,12 +3,16 @@ import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
 
 export default function AudioItem({ item: item }: { item: any }) {
   return (
-    <div className="w-full flex bg-gray-300 rounded-lg" key={item.id}>
-      <audio controls className="w-11/12">
+    <div
+      className="flex flex-col gap-y-4 justify-center items-center bg-gray-300 rounded-lg"
+      key={item.id}
+      style={{ width: "7rem", height: "7rem", objectFit: "cover" }}
+    >
+      <audio controls className="w-3">
         <source src={item.fileUrl} type={item.mime} />
       </audio>
       <Link
-        className="text-blue-600 flex items-center px-2"
+        className="text-purple-700 flex items-center px-2"
         target="_blank"
         rel="noopener noreferrer"
         href={`/download/?resource=${

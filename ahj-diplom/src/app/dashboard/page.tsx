@@ -30,20 +30,23 @@ export default function Dashboard() {
 
   return (
     <>
-      <header className="flex justify-between items-center w-full h-[5%] min-h-[2rem] border-b-2">
-        <h1 className="border flex items-center gap-x-2">
-          <span className="align-super text-ml font-semibold">
+      <header className="flex justify-between items-center w-full h-[5%] min-h-[2rem] border-b-2 bg-gradient-to-l from-purple-950 to-indigo-800">
+        <h1 className="flex items-center gap-x-2">
+          <span className="align-text-bottom text-gray-200 text-ml font-semibold pl-2">
             Chaos Organizer{" "}
           </span>
           {connectionStatus === "Open" ? (
             <div className="rounded-full w-3 h-3 bg-green-500 shadow"></div>
           ) : (
-            "Offline"
+            <div className="rounded-full w-3 h-3 bg-red-500 shadow"></div>
           )}
         </h1>
         <div className="flex gap-x-8">
           <Search />
-          <NavLinks setSidebarState={setSidebarState} />
+          <NavLinks
+            setSidebarState={setSidebarState}
+            sidebarState={sidebarState}
+          />
         </div>
       </header>
       <main className={"flex h-[95%] w-full"}>
@@ -60,7 +63,7 @@ export default function Dashboard() {
         </div>
         <aside
           className={clsx(
-            "transition-all duration-200 ease-in-out overflow-hidden h-full",
+            "border-l transition-all duration-200 ease-in-out overflow-hidden h-full",
             { "w-full md:w-1/2 xl:w-1/4": sidebarState, "w-0": !sidebarState },
           )}
         >

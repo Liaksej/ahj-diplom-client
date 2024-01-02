@@ -120,20 +120,8 @@ export default function GoogleMapsModal({
 
   return latLng && isLoaded ? (
     <div className="flex flex-col gap-2">
-      <button
-        className="bg-red-500 hover:bg-red-700 text-white px-1.5 py-0.5 rounded"
-        onClick={onClose}
-      >
-        Close
-      </button>
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white px-1.5 py-0.5 rounded"
-        onClick={onSave}
-      >
-        Save
-      </button>
       <GoogleMap
-        mapContainerStyle={{ width: "50rem", height: "40rem" }}
+        mapContainerStyle={{ width: "30rem", height: "30rem" }}
         center={latLng}
         zoom={17}
         options={{
@@ -146,6 +134,20 @@ export default function GoogleMapsModal({
       >
         {markerLatLng && <Marker position={markerLatLng} />}
       </GoogleMap>
+      <div className="w-full flex gap-2">
+        <button
+          className="w-1/2 bg-red-500 hover:bg-red-700 text-white px-1.5 py-0.5 rounded"
+          onClick={onClose}
+        >
+          Close
+        </button>
+        <button
+          className="w-1/2 bg-blue-500 hover:bg-blue-700 text-white px-1.5 py-0.5 rounded"
+          onClick={onSave}
+        >
+          Save
+        </button>
+      </div>
     </div>
   ) : (
     <>Loading...</>

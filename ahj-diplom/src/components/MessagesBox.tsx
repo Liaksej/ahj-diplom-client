@@ -189,7 +189,12 @@ function MessagesBox({
               remarkPlugins={[remarkGfm]}
               components={{
                 a: ({ node, ...props }) => (
-                  <a {...props} target="_blank" rel="noopener noreferrer" />
+                  <a
+                    className="font-normal text-blue-600"
+                    {...props}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
                 ),
               }}
             >
