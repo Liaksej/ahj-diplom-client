@@ -1,13 +1,14 @@
 import Link from "next/link";
+import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
 
-export default function PhotoItem({ item: item }: { item: any }) {
+export default function AudioItem({ item: item }: { item: any }) {
   return (
-    <div className="w-full flex justify-between" key={item.id}>
-      <audio controls className="w-5/6">
+    <div className="w-full flex bg-gray-300 rounded-lg" key={item.id}>
+      <audio controls className="w-11/12">
         <source src={item.fileUrl} type={item.mime} />
       </audio>
       <Link
-        className="text-blue-600 underline"
+        className="text-blue-600 flex items-center px-2"
         target="_blank"
         rel="noopener noreferrer"
         href={`/download/?resource=${
@@ -16,7 +17,7 @@ export default function PhotoItem({ item: item }: { item: any }) {
           item.fileName,
         )}&mime=${encodeURIComponent(item.mime)}`}
       >
-        Download
+        <ArrowDownCircleIcon className="h-6 w-6" />
       </Link>
     </div>
   );

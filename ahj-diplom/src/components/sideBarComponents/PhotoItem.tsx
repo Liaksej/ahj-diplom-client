@@ -13,6 +13,7 @@ export default function PhotoItem({ item: item }: { item: any }) {
         )}&mime=${encodeURIComponent(item.mime)}`}
       >
         <img
+          className="rounded"
           src={item.fileUrl}
           alt={item.name}
           style={{

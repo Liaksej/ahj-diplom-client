@@ -31,8 +31,15 @@ export default function Dashboard() {
   return (
     <>
       <header className="flex justify-between items-center w-full h-[5%] min-h-[2rem] border-b-2">
-        <h1 className="border">
-          Dashboard: <span>The WebSocket is currently {connectionStatus}</span>
+        <h1 className="border flex items-center gap-x-2">
+          <span className="align-super text-ml font-semibold">
+            Chaos Organizer{" "}
+          </span>
+          {connectionStatus === "Open" ? (
+            <div className="rounded-full w-3 h-3 bg-green-500 shadow"></div>
+          ) : (
+            "Offline"
+          )}
         </h1>
         <div className="flex gap-x-8">
           <Search />
@@ -43,7 +50,7 @@ export default function Dashboard() {
         <div
           className={clsx(
             "flex flex-col transition-all duration-200 ease-in-out overflow-hidden overflow-x-hidden",
-            { "w-full": !sidebarState, "w-2/3": sidebarState },
+            { "w-full": !sidebarState, "md:w-1/2 xl:w-3/4 w-0": sidebarState },
           )}
         >
           <DataUploadContextProvider>
@@ -53,8 +60,8 @@ export default function Dashboard() {
         </div>
         <aside
           className={clsx(
-            "transition-all duration-200 ease-in-out overflow-hidden",
-            { "w-1/3": sidebarState, "w-0": !sidebarState },
+            "transition-all duration-200 ease-in-out overflow-hidden h-full",
+            { "w-full md:w-1/2 xl:w-1/4": sidebarState, "w-0": !sidebarState },
           )}
         >
           <SideBar />

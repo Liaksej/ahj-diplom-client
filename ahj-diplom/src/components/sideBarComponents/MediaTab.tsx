@@ -14,7 +14,7 @@ export default function MediaTab({
 
   return (
     <div>
-      <div className="overflow-y-scroll flex gap-1">
+      <div className="overflow-y-scroll flex gap-2">
         {files?.map((item: any) => (
           <Suspense
             key={item.id}

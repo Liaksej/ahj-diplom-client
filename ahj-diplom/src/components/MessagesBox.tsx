@@ -16,6 +16,7 @@ import { DataUploadContext, WebSocketContext } from "@/context";
 import DeleteButton from "@/components/DeleteButton";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { Golos_Text } from "next/font/google";
+import Image from "next/image";
 
 const golos = Golos_Text({ subsets: ["latin", "cyrillic", "cyrillic-ext"] });
 
@@ -38,7 +39,7 @@ function MessagesBox({
 
   useEffect(() => {
     const element = nodeRef.current;
-    element?.scrollTo({ top: element.scrollHeight - 1, behavior: "smooth" });
+    element?.scrollTo({ top: element.scrollHeight, behavior: "smooth" });
   }, [newMessage]);
 
   const onDragOver = (event: DragEvent<HTMLDivElement>) => {
@@ -94,13 +95,13 @@ function MessagesBox({
           <li
             key={message.id}
             className={clsx(
-              "border p-3 w-fit max-w-2xl rounded-2xl bg-gray-100 shadow-sm",
+              "border p-3 w-fit min-w-[326px] max-w-2xl rounded-2xl bg-gray-100 shadow-sm",
               {
                 "self-end": message.user.name === "Alexey",
               },
             )}
           >
-            <div className="flex justify-between gap-6 items-center pb-2">
+            <div className="flex justify-between gap-6 items-center">
               <div className="flex gap-2">
                 <p className="text-gray-400 text-xs italic">
                   {new Date(message.date).toLocaleString("ru-RU")}
@@ -112,26 +113,29 @@ function MessagesBox({
               </DeleteButton>
             </div>
             {message.fileUrl && message.mime.startsWith("image/") && (
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`/download/?resource=${
-                  message.fileUrl
-                }&fileName=${encodeURIComponent(
-                  message.fileName,
-                )}&mime=${encodeURIComponent(message.mime)}`}
-              >
-                <img
-                  className="rounded"
-                  src={message.fileUrl}
-                  alt="photo"
-                  width={200}
-                />
-              </Link>
+              <div className="pt-2">
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`/download/?resource=${
+                    message.fileUrl
+                  }&fileName=${encodeURIComponent(
+                    message.fileName,
+                  )}&mime=${encodeURIComponent(message.mime)}`}
+                >
+                  <Image
+                    className="rounded"
+                    src={message.fileUrl}
+                    alt="photo"
+                    width={300}
+                    height={300}
+                  />
+                </Link>
+              </div>
             )}
             {message.fileUrl && message.mime.startsWith("video/") && (
-              <div className="flex flex-col gap-1.5">
-                <video className="rounded" controls={true} width={200}>
+              <div className="flex flex-col gap-1.5 pt-2">
+                <video className="rounded" controls={true} width={300}>
                   <source src={message.fileUrl} type={message.mime} />
                 </video>
                 <Link
@@ -149,8 +153,8 @@ function MessagesBox({
               </div>
             )}
             {message.fileUrl && message.mime.startsWith("audio/") && (
-              <div className="flex flex-col gap-1.5">
-                <audio controls={true}>
+              <div className="flex flex-col gap-1.5 pt-2">
+                <audio className="w-[300px]" controls={true}>
                   <source src={message.fileUrl} type={message.mime} />
                 </audio>
                 <Link
@@ -181,7 +185,7 @@ function MessagesBox({
               </Link>
             )}
             <Markdown
-              className="prose prose-slate pb-2 ${golos.className}"
+              className="prose prose-slate py-2 ${golos.className}"
               remarkPlugins={[remarkGfm]}
               components={{
                 a: ({ node, ...props }) => (

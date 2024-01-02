@@ -13,6 +13,7 @@ export default function VideoItem({ item: item }: { item: any }) {
         )}&mime=${encodeURIComponent(item.mime)}`}
       >
         <video
+          className="rounded"
           style={{
             width: "7rem",
             height: "7rem",

@@ -195,7 +195,7 @@ export function useMessages() {
 
   // Clean up messages history on connection close
   useEffect(() => {
-    if (state.connectionStatus === "Closed") {
+    if (state.connectionStatus in ["Closed", "Uninstantiated", "Closing"]) {
       dispatch({ type: "cleanMessageHistory" });
     }
   }, [state.connectionStatus]);
