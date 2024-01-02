@@ -15,6 +15,9 @@ import { DragEvent } from "react";
 import { DataUploadContext, WebSocketContext } from "@/context";
 import DeleteButton from "@/components/DeleteButton";
 import { XCircleIcon } from "@heroicons/react/24/outline";
+import { Golos_Text } from "next/font/google";
+
+const golos = Golos_Text({ subsets: ["latin", "cyrillic", "cyrillic-ext"] });
 
 function MessagesBox({
   inputRef,
@@ -91,28 +94,23 @@ function MessagesBox({
           <li
             key={message.id}
             className={clsx(
-              "border p-3 w-fit max-w-2xl rounded-2xl bg-white shadow-sm",
+              "border p-3 w-fit max-w-2xl rounded-2xl bg-gray-100 shadow-sm",
               {
                 "self-end": message.user.name === "Alexey",
               },
             )}
           >
-            <DeleteButton id={message.id}>
-              <XCircleIcon className="w-5 h-5 text-red-500" />
-            </DeleteButton>
-            <p className="text-gray-400 text-xs italic">{message.date}</p>
-            <p className="text-gray-400 text-xs">{message.user.name}</p>
-            <Markdown
-              className="prose prose-slate"
-              remarkPlugins={[remarkGfm]}
-              components={{
-                a: ({ node, ...props }) => (
-                  <a {...props} target="_blank" rel="noopener noreferrer" />
-                ),
-              }}
-            >
-              {message.text}
-            </Markdown>
+            <div className="flex justify-between gap-6 items-center pb-2">
+              <div className="flex gap-2">
+                <p className="text-gray-400 text-xs italic">
+                  {new Date(message.date).toLocaleString("ru-RU")}
+                </p>
+                <p className="text-gray-400 text-xs">{message.user.name}</p>
+              </div>
+              <DeleteButton id={message.id}>
+                <XCircleIcon className="w-5 h-5 text-gray-400" />
+              </DeleteButton>
+            </div>
             {message.fileUrl && message.mime.startsWith("image/") && (
               <Link
                 target="_blank"
@@ -123,15 +121,21 @@ function MessagesBox({
                   message.fileName,
                 )}&mime=${encodeURIComponent(message.mime)}`}
               >
-                <img src={message.fileUrl} alt="photo" width={200} />
+                <img
+                  className="rounded"
+                  src={message.fileUrl}
+                  alt="photo"
+                  width={200}
+                />
               </Link>
             )}
             {message.fileUrl && message.mime.startsWith("video/") && (
-              <>
-                <video controls={true} width={200}>
+              <div className="flex flex-col gap-1.5">
+                <video className="rounded" controls={true} width={200}>
                   <source src={message.fileUrl} type={message.mime} />
                 </video>
                 <Link
+                  className="text-sm text-gray-400 hover:text-gray-600 hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
                   href={`/download/?resource=${
@@ -140,16 +144,17 @@ function MessagesBox({
                     message.fileName,
                   )}&mime=${encodeURIComponent(message.mime)}`}
                 >
-                  Dowload
+                  Download
                 </Link>
-              </>
+              </div>
             )}
             {message.fileUrl && message.mime.startsWith("audio/") && (
-              <>
+              <div className="flex flex-col gap-1.5">
                 <audio controls={true}>
                   <source src={message.fileUrl} type={message.mime} />
                 </audio>
                 <Link
+                  className="text-sm text-gray-400 hover:text-gray-600 hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
                   href={`/download/?resource=${
@@ -160,7 +165,7 @@ function MessagesBox({
                 >
                   Dowload
                 </Link>
-              </>
+              </div>
             )}
             {message.fileUrl && message.mime.startsWith("application/") && (
               <Link
@@ -175,6 +180,17 @@ function MessagesBox({
                 {message.fileName}
               </Link>
             )}
+            <Markdown
+              className="prose prose-slate pb-2 ${golos.className}"
+              remarkPlugins={[remarkGfm]}
+              components={{
+                a: ({ node, ...props }) => (
+                  <a {...props} target="_blank" rel="noopener noreferrer" />
+                ),
+              }}
+            >
+              {message.text}
+            </Markdown>
             {message.geoData && (
               <p className="text-sm text-gray-400">
                 {message.geoData.place !== ""

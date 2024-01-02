@@ -3,6 +3,7 @@ import { deleteMessageFromServer } from "@/library/actions";
 import { WebSocketContext } from "@/context";
 import Spinner from "@/components/Spinner";
 import { useFormStatus } from "react-dom";
+import { clsx } from "clsx";
 
 export default function DeleteButton({
   children,
@@ -24,7 +25,7 @@ export default function DeleteButton({
   return (
     <form action={deleteHandler}>
       <input type="hidden" name="id" value={id} />
-      <div className="flex space-x-2 items-center">
+      <div className="flex flex-row-reverse space-x-2 items-center">
         <button type="submit">{children}</button>
         <SpinForDelete />
       </div>
@@ -34,5 +35,9 @@ export default function DeleteButton({
 
 function SpinForDelete() {
   const { pending } = useFormStatus();
-  return pending && <Spinner width="1.1rem" height="1.1rem" />;
+  return (
+    <div className={clsx(!pending && "w-[1.1rem]")}>
+      {pending && <Spinner width="1.1rem" height="1.1rem" />}
+    </div>
+  );
 }
