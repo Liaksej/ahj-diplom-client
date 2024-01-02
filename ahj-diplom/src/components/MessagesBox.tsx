@@ -174,6 +174,7 @@ function MessagesBox({
             {message.fileUrl && message.mime.startsWith("application/") && (
               <Link
                 target="_blank"
+                className="text-sm hover:text-gray-600 hover:underline"
                 rel="noopener noreferrer"
                 href={`/download/?resource=${
                   message.fileUrl

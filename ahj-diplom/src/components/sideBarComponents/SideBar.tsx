@@ -71,7 +71,7 @@ export default function SideBar() {
         </button>
       </div>
 
-      <div className="bg-gray-100 h-full pt-2 flex justify-center">
+      <div className="bg-gradient-to-b from-gray-100 h-full pt-2 flex justify-center">
         {currentTab === "photo" && (
           <MediaTab files={filterDataByMime("image")} mediaItem={"PhotoItem"} />
         )}

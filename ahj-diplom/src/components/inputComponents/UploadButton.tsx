@@ -76,15 +76,16 @@ export default function UploadButton({
                 src={stateDataUpload.filePreview as string}
                 alt="file preview"
                 width="98"
+                className="rounded"
               />
             )}
-            <p className="text-sm text-gray-500 mb-1 break-words truncate">
+            <p className="text-sm font-light text-gray-500 mb-1 break-words truncate">
               {stateDataUpload.file?.name}
             </p>
             <form action={handleFormSubmit}>
               <div style={{ position: "relative" }}>
                 <textarea
-                  className="min-h-[3rem] w-full border-4"
+                  className="min-h-[3rem] w-full border-2 focus:outline-none rounded resize-none p-2 pr-6"
                   placeholder="Write a message"
                   name="text"
                 ></textarea>
