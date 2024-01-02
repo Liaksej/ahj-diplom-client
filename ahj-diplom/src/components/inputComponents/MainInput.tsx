@@ -25,6 +25,7 @@ import GeoButton from "@/components/inputComponents/GeoButton";
 import { DataUploadContext } from "@/context";
 import { MapPinIcon as MapPinIconSolid } from "@heroicons/react/24/solid";
 import { clsx } from "clsx";
+import { useFormStatus } from "react-dom";
 
 export default function MainInput({ inputRef }: { inputRef: any }) {
   const {
@@ -57,6 +58,9 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
   };
 
   const handleSendMessageToServer = async (formData: FormData) => {
+    if (textareaRef.current) {
+      textareaRef.current.value = "";
+    }
     if (geoData) {
       formData.append("geodata", JSON.stringify(geoData));
       dispatchDataUpload({ type: "setGeoData", payload: null });
@@ -146,13 +150,28 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
           right: "1rem",
         }}
       >
-        <div className="flex gap-x-3 content-center">
+        <div className="flex gap-x-3 items-center">
           <Emoji setShowEmojiPicker={setShowEmojiPicker}>
-            <FaceSmileIcon className="h-8 w-8 text-gray-500 hover:text-gray-600" />
+            <FaceSmileIcon className="h-7 w-7 text-gray-500 hover:text-gray-600 rounded-full self-center" />
           </Emoji>
-          <PaperAirplaneIcon className="h-8 w-8 text-gray-500 hover:text-gray-600 p-1 hover:bg-gradient-to-tl hover:from-purple-500 hover:to-pink-500 hover:to-50% items-center rounded-full" />
+          <SubmitButton />
         </div>
       </div>
     </form>
+  );
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      className={clsx(
+        "p-1 hover:bg-gradient-to-tl hover:from-purple-500 hover:to-pink-500 hover:to-50% items-center rounded-full",
+        pending && "cursor-not-allowed animate-spin",
+      )}
+    >
+      <PaperAirplaneIcon className="h-7 w-7 text-gray-500 hover:text-gray-600" />
+    </button>
   );
 }
