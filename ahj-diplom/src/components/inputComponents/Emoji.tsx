@@ -9,7 +9,11 @@ export default function Emoji({
 }) {
   return (
     <div>
-      <button type="button" onClick={() => setShowEmojiPicker((prev) => !prev)}>
+      <button
+        className="pt-2"
+        type="button"
+        onClick={() => setShowEmojiPicker((prev) => !prev)}
+      >
         {children}
       </button>
     </div>

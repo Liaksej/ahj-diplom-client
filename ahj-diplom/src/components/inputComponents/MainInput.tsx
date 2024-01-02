@@ -143,14 +143,14 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
       ></textarea>
 
       <div
-        className="flex h-15 items-center"
+        className="flex h-15 items-buttom"
         style={{
           position: "absolute",
-          bottom: "0.9rem",
+          bottom: "1rem",
           right: "1rem",
         }}
       >
-        <div className="flex gap-x-3 items-center">
+        <div className="flex gap-x-4 align-middle">
           <Emoji setShowEmojiPicker={setShowEmojiPicker}>
             <FaceSmileIcon className="h-7 w-7 text-gray-500 hover:text-gray-600 rounded-full self-center" />
           </Emoji>
@@ -167,7 +167,7 @@ function SubmitButton() {
     <button
       type="submit"
       className={clsx(
-        "p-1 hover:bg-gradient-to-tl hover:from-purple-500 hover:to-pink-500 hover:to-50% items-center rounded-full",
+        "p-1.5 hover:bg-gradient-to-tl hover:from-purple-500 hover:to-pink-500 hover:to-50% items-center rounded-full",
         pending && "cursor-not-allowed animate-spin",
       )}
     >
