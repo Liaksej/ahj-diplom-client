@@ -151,7 +151,7 @@ export function useMessages() {
             behavior: "smooth",
           });
         }
-      }, 1000);
+      }, 1500);
 
       container.addEventListener("scroll", handleScroll);
 
