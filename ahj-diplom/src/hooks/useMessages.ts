@@ -109,12 +109,11 @@ export function useMessages() {
     `${process.env.NEXT_PUBLIC_WS_URL}/?email=` +
     (encodeURIComponent(email) || "");
 
-  const { lastJsonMessage, readyState, sendJsonMessage } = useWebSocket(
-    SOCKET_URL,
-    {
-      shouldReconnect: (closeEvent) => true,
-    },
-  );
+  const { lastJsonMessage, readyState, sendJsonMessage } = useWebSocket<
+    Record<string, any | undefined>
+  >(SOCKET_URL, {
+    shouldReconnect: (closeEvent) => true,
+  });
 
   // Fetch messages from server
   const fetchMessages = useCallback(() => {
@@ -180,6 +179,21 @@ export function useMessages() {
       }
 
       if (!Array.isArray(lastJsonMessage)) {
+        if (
+          lastJsonMessage &&
+          lastJsonMessage.event !== undefined &&
+          lastJsonMessage.data !== undefined &&
+          lastJsonMessage.event === "messageDeleted" &&
+          state.messageHistory.some((item) => item.id === lastJsonMessage.data)
+        ) {
+          dispatch({
+            type: "deleteMessage",
+            payload: (lastJsonMessage as { event: string; data: string }).data,
+          });
+          dispatch({ type: "setNewMessage", payload: `${Math.random()}` });
+          return;
+        }
+
         dispatch({ type: "sendMessage", payload: lastJsonMessage });
         dispatch({
           type: "setNewMessage",

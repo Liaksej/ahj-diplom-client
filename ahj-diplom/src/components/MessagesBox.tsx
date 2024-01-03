@@ -14,11 +14,8 @@ import { DragEvent } from "react";
 import { DataUploadContext, WebSocketContext } from "@/context";
 import DeleteButton from "@/components/DeleteButton";
 import { XCircleIcon } from "@heroicons/react/24/outline";
-import { Golos_Text } from "next/font/google";
 import Image from "next/image";
 import { Message } from "@/library/definitions";
-
-const golos = Golos_Text({ subsets: ["latin", "cyrillic", "cyrillic-ext"] });
 
 function MessagesBox({
   inputRef,
@@ -92,10 +89,7 @@ function MessagesBox({
           <li
             key={message.id}
             className={clsx(
-              "border p-3 w-fit min-w-[326px] max-w-2xl rounded-2xl bg-gray-100 shadow-sm",
-              {
-                "self-end": message.user.name === "Alexey",
-              },
+              "border p-3 w-fit min-w-[326px] max-w-2xl rounded-2xl bg-gray-100 shadow-sm self-end",
             )}
           >
             <div className="flex justify-between gap-6 items-center">
@@ -183,7 +177,7 @@ function MessagesBox({
               </Link>
             )}
             <Markdown
-              className={`prose prose-slate py-2 ${golos.className}`}
+              className={`prose prose-slate py-2`}
               remarkPlugins={[remarkGfm]}
               components={{
                 a: ({ node, ...props }) => (
