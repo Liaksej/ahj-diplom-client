@@ -106,7 +106,8 @@ export function useMessages() {
 
   const email = Cookies.get("email") as string;
   const SOCKET_URL =
-    "ws://127.0.0.1:8080/api/ws/?email=" + (encodeURIComponent(email) || "");
+    `${process.env.NEXT_PUBLIC_WS_URL}/?email=` +
+    (encodeURIComponent(email) || "");
 
   const { lastJsonMessage, readyState, sendJsonMessage } = useWebSocket(
     SOCKET_URL,
