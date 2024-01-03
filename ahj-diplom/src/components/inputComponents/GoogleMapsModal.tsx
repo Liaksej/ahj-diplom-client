@@ -5,7 +5,6 @@ import {
   useState,
   Dispatch,
   useRef,
-  MutableRefObject,
   useContext,
 } from "react";
 import { DataUploadContext } from "@/context";

@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { DocumentIcon } from "@heroicons/react/24/outline";
+import { Item } from "@/library/definitions";
 
-export default function FileTab({ files }: { files: any[] | undefined }) {
+export default function FileTab({ files }: { files: Item[] | undefined }) {
   return (
     <div>
       <div className="overflow-y-scroll flex gap-2">
-        {files?.map((item: any) => (
+        {files?.map((item) => (
           <Link
             key={item.id}
             className="text-blue-600 underline"

@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AtSymbolIcon } from "@heroicons/react/24/outline";
 
-export default function Loginform() {
+export default function LoginForm() {
   async function loginToServer(formData: FormData) {
     "use server";
     if (!formData.get("email")) {

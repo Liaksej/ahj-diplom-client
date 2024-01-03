@@ -1,4 +1,4 @@
-import { MutableRefObject, ReactNode, useContext, useState } from "react";
+import { ReactNode, useContext, useState } from "react";
 import Modal from "@/components/Modal";
 import { createPortal } from "react-dom";
 import GoogleMapsModal from "@/components/inputComponents/GoogleMapsModal";

@@ -4,6 +4,7 @@ import { useState } from "react";
 import MediaTab from "@/components/sideBarComponents/MediaTab";
 import FileTab from "@/components/sideBarComponents/FileTab";
 import { clsx } from "clsx";
+import { Item } from "@/library/definitions";
 
 export default function SideBar() {
   const [currentTab, setCurrentTab] = useState("photo");
@@ -14,7 +15,7 @@ export default function SideBar() {
     )}`,
   );
 
-  const filterDataByMime: (mime: string) => any[] | undefined = (mime) => {
+  const filterDataByMime: (mime: string) => Item[] | undefined = (mime) => {
     return data?.filter((item) => item.mime.startsWith(mime));
   };
 

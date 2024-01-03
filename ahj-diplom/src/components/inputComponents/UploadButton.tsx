@@ -70,7 +70,7 @@ export default function UploadButton({
       {stateDataUpload.isModalOpen &&
         createPortal(
           <Modal>
-            <h1 className="font-bold pb-1">File for upload</h1>
+            <h2 className="font-bold pb-1 text-xl pb-2">Upload</h2>
             {stateDataUpload.filePreview && (
               <img
                 src={stateDataUpload.filePreview as string}

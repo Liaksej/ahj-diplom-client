@@ -3,7 +3,6 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
 import React, {
-  Fragment,
   memo,
   MutableRefObject,
   useContext,
@@ -17,6 +16,7 @@ import DeleteButton from "@/components/DeleteButton";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { Golos_Text } from "next/font/google";
 import Image from "next/image";
+import { Message } from "@/library/definitions";
 
 const golos = Golos_Text({ subsets: ["latin", "cyrillic", "cyrillic-ext"] });
 
@@ -33,9 +33,6 @@ function MessagesBox({
   const { dispatchDataUpload } = useContext(DataUploadContext);
 
   const nodeRef = useRef<HTMLDivElement>(null);
-
-  const topMessageRef = useRef<HTMLDivElement>(null);
-  const lastNewMessageRef = useRef<string>("");
 
   useEffect(() => {
     const element = nodeRef.current;
@@ -91,7 +88,7 @@ function MessagesBox({
       className="h-full overflow-y-scroll bg-gray-50"
     >
       <ul className="flex flex-col gap-2">
-        {messageHistory.map((message: any, index) => (
+        {messageHistory.map((message: Message) => (
           <li
             key={message.id}
             className={clsx(
@@ -167,7 +164,7 @@ function MessagesBox({
                     message.fileName,
                   )}&mime=${encodeURIComponent(message.mime)}`}
                 >
-                  Dowload
+                  Download
                 </Link>
               </div>
             )}
@@ -186,7 +183,7 @@ function MessagesBox({
               </Link>
             )}
             <Markdown
-              className="prose prose-slate py-2 ${golos.className}"
+              className={`prose prose-slate py-2 ${golos.className}`}
               remarkPlugins={[remarkGfm]}
               components={{
                 a: ({ node, ...props }) => (

@@ -14,7 +14,7 @@ export default function Search() {
     300,
   );
 
-  const clerInput = () => {
+  const clearInput = () => {
     if (inputRef.current) {
       inputRef.current.value = "";
       dispatch({ type: "setSearchParam", payload: "" });
@@ -31,7 +31,7 @@ export default function Search() {
       />
       <button
         type="button"
-        onClick={clerInput}
+        onClick={clearInput}
         className="pr-2"
         style={{
           position: "absolute",

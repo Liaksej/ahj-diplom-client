@@ -1,4 +1,3 @@
-import { usePathname } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 import { ArchiveBoxIcon } from "@heroicons/react/24/outline";
 import { clsx } from "clsx";

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
+import { Item } from "@/library/definitions";
 
-export default function AudioItem({ item: item }: { item: any }) {
+export default function AudioItem({ item: item }: { item: Item }) {
   return (
     <div
       className="flex flex-col gap-y-4 justify-center items-center bg-gray-300 rounded-lg"

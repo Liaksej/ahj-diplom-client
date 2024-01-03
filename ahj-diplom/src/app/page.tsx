@@ -1,4 +1,4 @@
-import Loginform from "@/components/Loginform";
+import LoginForm from "@/components/LoginForm";
 import { Cairo } from "next/font/google";
 
 const cairo = Cairo({ subsets: ["latin"] });
@@ -11,7 +11,7 @@ export default function Home() {
       >
         Chaos Organizer
       </h1>
-      <Loginform />
+      <LoginForm />
     </div>
   );
 }

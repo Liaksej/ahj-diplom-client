@@ -1,4 +1,4 @@
-import { Suspense, lazy, ReactNode } from "react";
+import { Suspense, lazy } from "react";
 import Spinner from "@/components/Spinner";
 
 export default function MediaTab({

@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { Item } from "@/library/definitions";
 
-export default function VideoItem({ item: item }: { item: any }) {
+export default function VideoItem({ item: item }: { item: Item }) {
   return (
     <div key={item.id}>
       <Link
