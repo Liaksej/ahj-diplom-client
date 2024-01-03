@@ -151,7 +151,7 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
         className="flex h-15 items-buttom"
         style={{
           position: "absolute",
-          bottom: "1rem",
+          bottom: "0.9rem",
           right: "1rem",
         }}
       >
@@ -172,7 +172,7 @@ function SubmitButton() {
     <button
       type="submit"
       className={clsx(
-        "p-1.5 hover:bg-gradient-to-tl hover:from-purple-500 hover:to-pink-500 hover:to-50% items-center rounded-full",
+        "p-2 hover:bg-gradient-to-tl hover:from-purple-500 hover:to-pink-500 hover:to-50% items-center rounded-full",
         pending && "cursor-not-allowed animate-spin",
       )}
     >
