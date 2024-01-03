@@ -34,7 +34,6 @@ export default function MainInput({ inputRef }: { inputRef: any }) {
   } = useContext(DataUploadContext);
 
   const [showButtons, setShowButtons] = useState(false);
-
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const formRef = useRef<HTMLFormElement>(null);

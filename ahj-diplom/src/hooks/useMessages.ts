@@ -111,11 +111,7 @@ export function useMessages() {
   const { lastJsonMessage, readyState, sendJsonMessage } = useWebSocket(
     SOCKET_URL,
     {
-      onOpen: () => {
-        console.log("opened");
-      },
       shouldReconnect: (closeEvent) => true,
-      onClose: () => console.log("closed"),
     },
   );
 
@@ -169,7 +165,6 @@ export function useMessages() {
   useEffect(() => {
     if (lastJsonMessage !== null) {
       if (Array.isArray(lastJsonMessage)) {
-        console.log(lastJsonMessage);
         dispatch({
           type: "setMessageHistory",
           payload: lastJsonMessage as Array<any>,

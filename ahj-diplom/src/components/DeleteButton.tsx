@@ -12,6 +12,7 @@ export default function DeleteButton({
   id: string;
 }) {
   const { dispatch } = useContext(WebSocketContext);
+
   const deleteHandler = async (formData: FormData) => {
     try {
       dispatch({ type: "deleteMessage", payload: id });

@@ -5,12 +5,12 @@ import GoogleMapsModal from "@/components/inputComponents/GoogleMapsModal";
 import { DataUploadContext } from "@/context";
 
 export default function GeoButton({ children }: { children: ReactNode }) {
-  const [isGeoModalOpen, setIsGeoModalOpen] = useState(false);
-
   const {
     stateDataUpload: { geoData },
     dispatchDataUpload,
   } = useContext(DataUploadContext);
+
+  const [isGeoModalOpen, setIsGeoModalOpen] = useState(false);
 
   const geoButtonHandler = () => {
     if (geoData) {
