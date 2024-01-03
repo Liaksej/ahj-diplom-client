@@ -5,11 +5,11 @@ import { Item } from "@/library/definitions";
 export default function AudioItem({ item: item }: { item: Item }) {
   return (
     <div
-      className="flex flex-col gap-y-4 justify-center items-center bg-gray-300 rounded-lg"
+      className="flex flex-col gap-y-4 justify-center items-center w-fit bg-gray-300 rounded-lg"
       key={item.id}
-      style={{ width: "7rem", height: "7rem", objectFit: "cover" }}
+      style={{ height: "7rem" }}
     >
-      <audio controls className="w-3">
+      <audio controls className="overflow-x-scroll">
         <source src={item.fileUrl} type={item.mime} />
       </audio>
       <Link
