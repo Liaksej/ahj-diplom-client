@@ -1,6 +1,6 @@
 # Chaos Organizer
 
-**frontend-part** -----> backend-part [here](https://github.com/Liaksej/ahj-diplom-server/main)
+**frontend-part** -----> backend-part [here](https://github.com/Liaksej/ahj-diplom-server)
 
 Веб-приложение для ведения дневника, хранения информации и поиска.
 
@@ -9,21 +9,21 @@ _Сохраняйте заметки, загружайте фотографии,
 ---
 #### Разделы:
 
-1. [Инструкция по эксплуатации]()
-   - [Вход в чат]()
-   - [Отправка текстовых сообщений]()
-   - [Markdown-разметка текстового сообщения]()
-   - [Emoji]()
-   - [Удаление сообщений]()
-   - [Сохранения сообщений с файлами]()
-   - [Отправка геопозиции]()
-   - [Поиск по сообщениям]()
-   - [Воспроизведение видео/аудио]()
-   - [Скачивание файлов]()
-   - [Просмотр файлов по категориям]()
-   - [Пагинация]()
-   - [Синхронизация]()
-2. [Использованные технологии]()
+1. [Инструкция по эксплуатации](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#инструкция-по-эксплуатации)
+   - [Вход в чат](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#вход-в-chaos-organizer)
+   - [Отправка текстовых сообщений](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#отправка-текстовых-сообщений)
+   - [Markdown-разметка текстового сообщения](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#markdown-разметка-текстового-сообщения)
+   - [Emoji](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#emoji)
+   - [Удаление сообщений](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#удаление-сообщений)
+   - [Сохранения сообщений с файлами](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#сохранения-сообщений-с-файлами)
+   - [Отправка геопозиции](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#отправка-геолокации)
+   - [Поиск по сообщениям](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#поиск-по-сообщениям)
+   - [Воспроизведение видео/аудио](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#воспроизведение-видеоаудио)
+   - [Скачивание файлов](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#скачивание-файлов)
+   - [Просмотр файлов по категориям](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#просмотр-файлов-по-категориям)
+   - [Пагинация](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#пагинация)
+   - [Синхронизация](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#синхронизация)
+2. [Использованные технологии](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#использованные-технологии)
 ---
 
 ## Инструкция по эксплуатации
