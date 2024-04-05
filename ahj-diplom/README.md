@@ -2,181 +2,183 @@
 
 **frontend-part** -----> backend-part [here](https://github.com/Liaksej/ahj-diplom-server)
 
-Веб-приложение для ведения дневника, хранения информации и поиска.
+Web-based diary for storage and search application.
 
-_Сохраняйте заметки, загружайте фотографии, видео, аудио, ставьте геотеги, ищите нужные заметки по тексту и скачивайте сохраненные файлы._
+_Save notes, upload photos, videos, audio, geotag, search for notes by text and download saved files._
 
 ---
-#### Разделы:
+#### Topics:
 
-1. [Инструкция по эксплуатации](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#инструкция-по-эксплуатации)
-   - [Вход в чат](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#вход-в-chaos-organizer)
-   - [Отправка текстовых сообщений](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#отправка-текстовых-сообщений)
-   - [Markdown-разметка текстового сообщения](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#markdown-разметка-текстового-сообщения)
+1. [Manual](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#инструкция-по-эксплуатации)
+   - [Login to chat](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#вход-в-chaos-organizer)
+   - [Send text messages](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#отправка-текстовых-сообщений)
+   - [Markdown markup for text messages](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#markdown-разметка-текстового-сообщения)
    - [Emoji](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#emoji)
-   - [Удаление сообщений](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#удаление-сообщений)
-   - [Сохранения сообщений с файлами](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#сохранения-сообщений-с-файлами)
-   - [Отправка геопозиции](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#отправка-геолокации)
-   - [Поиск по сообщениям](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#поиск-по-сообщениям)
-   - [Воспроизведение видео/аудио](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#воспроизведение-видеоаудио)
-   - [Скачивание файлов](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#скачивание-файлов)
-   - [Просмотр файлов по категориям](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#просмотр-файлов-по-категориям)
-   - [Пагинация](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#пагинация)
-   - [Синхронизация](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#синхронизация)
-2. [Использованные технологии](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#использованные-технологии)
+   - [Delete message](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#удаление-сообщений)
+   - [Save message with files](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#сохранения-сообщений-с-файлами)
+   - [Send geo position](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#отправка-геолокации)
+   - [Searching for messages](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#поиск-по-сообщениям)
+   - [Video/audio playback](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#воспроизведение-видеоаудио)
+   - [File downloading](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#скачивание-файлов)
+   - [Browse files by category](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#просмотр-файлов-по-категориям)
+   - [Pagination](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#пагинация)
+   - [Synchronization](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#синхронизация)
+2. [Technology stack](https://github.com/Liaksej/ahj-diplom-client/tree/main/ahj-diplom#использованные-технологии)
 ---
 
-## Инструкция по эксплуатации
+## Manual
 
-### Вход в Chaos Organizer
+### Login to chat
 
-Для входа в приложение необходимо перейти по ссылке https://ahj-diplom-client-production.up.railway.app, ввести
-электронную почту, выданную разработчиком и нажать на кнопку `Log in`. Перед вами откроется рабочая панель приложения.
+To enter the application, go to https://ahj-diplom-client-production.up.railway.app, 
+enter the e-mail address given by the developer and click `Log in`. The working panel of the application will open 
+in front of you.
 
 ![img.png](images/img1.png)
 
-### Отправка текстовых сообщений
+### Send text messages
 
-Отправка текстовых сообщений осуществляется через поле ввода в нижней части приложения. 
-Наберите нужный текст сообщения и нажмите на кнопку с символом бумажного самолета или сочетание клавиш `Cmd/Ctrl + Enter`.
+Sending text messages is done through the input field at the bottom of the application.
+Type the desired message text and press the button with the paper airplane symbol or the key combination `Cmd/Ctrl + Enter`.
 
 ![img.png](images/img2.png)
 
-Если вы хотите написать длинный текст, поле ввода будет автоматически увеличиваться, подстраиваясь под размер вашего текста.
+If you want to write a long text, the input field will automatically enlarge to fit the size of your text.
 
-### Markdown-разметка текстового сообщения
+### Markdown markup for text messages
 
-Приложение поддерживает [markdown-разметку](https://www.markdownguide.org/basic-syntax/), в том числе:
-* отображение ссылок и заголовков:  
+The application supports [markdown mapping](https://www.markdownguide.org/basic-syntax/), including:
+* displaying links and headings: 
 ![img_1.png](images/img3.png)
-* отображение кода:  
+* code displaying:
 ![img_1.png](images/img4.png)
-* отображение таблиц:  
+* tab displaying:  
 ![img_1.png](images/img5.png)
-* прочую markdown-разметку.
+* other Markdown markup.
 
 ### Emoji
 
-Приложение поддерживает полный набор Emoji для основного текстового поля ввода. Чтобы воспользоваться
-ими:
-* нажмите на кнопку со смайликом рядом с кнопкой отправки сообщений;
-* выберите нужные смайлы (они будут автоматически добавляться в конец строки текстового поля);
-* закройте окно выбора Emoji, снова нажав на кнопку со смайликом в поле ввода снова;
+The app supports a full set of Emoji for the main text input field. To use them:
+* click on the smiley face button next to the send messages button;
+* select the desired emoticons (they will be automatically added to the end of the text field line);
+* close the Emoji selection window by clicking the Emoji button in the input field again;
 
 ![img_1.png](images/img6.png)
 
-### Удаление сообщений
+### Delete message
 
-Для удаления сообщения нажмите крестик в правом верхнем углу опубликованного сообщения.
+To delete a post, click the cross in the upper right corner of the published post.
 
 ![img_1.png](images/img5.png)
 
-### Сохранения сообщений с файлами
+### Save message with files
 
-Для сохранений файлов и мультимедиа нажмите на значок скрепки в текстовом поле ввода слева. Над скрепкой отобразится
-вертикальная панель со значками (сверху вниз):
-* добавления метки геолокации;
-* добавления изображений;
-* добавления видео-файлов;
-* добавления аудио-файлов;
-* добавление иных файлов;
-
-![img_1.png](images/img7.png)
-
-Выберите подходящий тип файла и нажмите на отвечающий за него значок.
-После выбора файла на диске перед вами откроется модальное окно с названием файла, его превью
-(только для изображений и видео), полем ввода текста сообщения для него (также поддерживает Markdown), кнопкой выбора геолокации, 
-а также двумя кнопками `Close` для отмены действия и `Upload` для отправки сообщения с файлом на сервер.
-
-В случае, если открытая панель выбора фалов вам не нужна, нажмите на символ скрепки в основном поле текстового ввода еще раз.
-
-### Отправка геолокации
-
-Приложение поддерживает возможность прикрепить к сообщению геолокационную метку с адресом или координатами (в случае недоступности адреса).
-Выбор адресов выполняется через API Google Maps.
-
-Для выбора и установки метки нажмите верхнюю кнопку вертикального меню:
+To save files and media, click the paperclip icon in the text input box on the left. Above the paper clip, you will see
+a vertical pane of icons (top to bottom) appears above the paper clip of:
+* adding a geolocation tag;
+* adding images;
+* adding video files;
+* adding audio files;
+* adding other files;
 
 ![img_1.png](images/img7.png)
 
-Перед вами появится модальное окно с выбором геолокации с точкой, где вы находитесь. Если у вас запрещена геолокация, откроется произвольная точка на карте:
+Select the appropriate file type and click on the icon responsible for it.
+After selecting a file on disk, the modal window will open with the file name, its preview (only for images and videos), 
+contains a input for the text message (also supports Markdown), the button for selecting geolocation, 
+and two buttons `Close` for cancellation of action and `Upload` for submitting a message on the server.
 
+In case you do not need the open file selection panel, click the paperclip symbol in the main text input field again.
+
+### Send geo position
+
+The application supports the ability to attach a geolocation tag with an address or coordinates to a message (in case the address is unavailable).
+Addresses are selected via Google Maps API.
+
+Press the top button of the vertical menu to select and set the label:
+
+![img_1.png](images/img7.png)
+
+The modal window will appear in front of you with a geolocation selection with the point where you are. 
+If you do not allow geolocation, an arbitrary point on the map will open:
 ![img_1.png](images/img8.png)
 
-Выберите подходящее место (оно может быть не обязательно тем, где вы находитесь) и кликните по нему. Появится красная отметка, которая и будет
-символизировать выбранную точку.
+Select a suitable location (it may not necessarily be where you are) and click on it. 
+A red mark will appear, which will symbolize the selected point.
 
-Нажмите кнопку `Save` для сохранения выбранной геопозиции или `Close` для отмены действия.
+Press button `Save` for save chosen geo position or `Close` for cancellation.
 
-Если вы нажали `Save`, выбранная позиция сохранится и буде отправлена с ближайшим сообщением. Если вы хотите отменить выбор, просто нажмите на значок геопозиции в меню.
-
+If you click `Save`, the chosen geo position will be saved and sent with the next message. 
+If you want to cancel the selection, just click on the geo position icon in the menu.
 ![img_1.png](images/img7.png)
 
-### Поиск по сообщениям
+### Searching for messages
 
-В приложении доступен поиск (фильтрация) по тексту сообщений.
+Searching (filtering) by text of messages is available in the application.
 
 ![img_1.png](images/img9.png)
 
-Введите в поле поиска слово, текст или несколько букв. Если сохраненные сообщения содержат их, они будут отображены на панели.
+Enter a word, text, or multiple letters in the search field. 
+If your saved messages contain them, they will be displayed in the panel.
 
-Если вы хотите очистить поиск, удалите текст в поле поиска или нажмите на крестик в правой его части.
+If you want to clear the search, delete the text in the search box or click the cross on the right side of the search box.
 
-### Воспроизведение видео/аудио
+### Video/audio playback
 
-Видео- и аудио-файлы, прикрепленные к сообщению можно просмотреть/прослушать нажав соответствующие элементы плеейра:
+Video and audio files attached to the message can be viewed/listened to by clicking the corresponding elements of the player:
 
-Видео-плеер:
+Video player:
 
 ![img_1.png](images/img10.png)
 
-Аудио-плеер:
+Audio player:
 
 ![img_1.png](images/img11.png)
 
-### Скачивание файлов
+### File downloading
 
-Вы можете скачать загруженные файлы на ваше устройство:
+You can download files on your device:
 
-* Кликните по изображению, которое хотите скачать, оно откроется в отдельном окне, заем сохраните его;
-* Нажмите на кнопку Download, расположенную под видео- или аудио-файлом4
+* Click on the image you want to download, it will open in a separate window, save it;
+* Click the Download button below the video or audio file;
 ![img_1.png](images/img11.png)
-* Кликните по имени файла (кроме аудио, видео и изображения);
+* Click on the file name (except audio, video and image);
 
-### Просмотр файлов по категориям
+### Browse files by category
 
-Все файлы, сохраненные в приложении, можно просмотреть в боковой панели. Для ее открытия, нажмите на значок коробки
-в верхнем правом углу приложения справа от поля поиска сообщений:
+All files saved in the application can be viewed in the sidebar. To open a file, tap the box icon
+in the upper right corner of the application to the right of the message search field.
 
 ![img_12.png](images/img12.png)
 
-Файлы в боковой панели разделены по категориям:
+The files in the sidebar are categorized:
 
-* Фотографии
-* Видео-файлы
-* Аудио-файлы
-* Прочие файлы
+* Images
+* Video
+* Audio
+* Other files
 
-Все файлы отсортированы по дате (от самых новых к старым).
+All files are sorted by date (from newest to oldest).
 
-По клику на файл вы можете скачать его.
+By clicking on the file you can download them.
 
-Чтобы закрыть боковую панель, нажмите еще раз на значок коробки в верхнем правом углу.
+To close the sidebar, click again on the box icon in the upper right corner.
 
-### Пагинация
+### Pagination
 
-При открытии приложения в вашем браузере загружаются изначально не все сохраненные сообщения, а последние 10. 
-Чтобы загрузить более старые сообщения, пролистайте панель сообщений вверх и задержитесь на секунду в верхней точке прокрутки.
-Будут подгружены более старые сообщения, но не больше 10, если нужны еще - снова проскрольте область сообщений до самой верхней точки.
+When you open the app in your browser, not all your saved messages are initially loaded, but the last 10.
+To download older posts, scroll up the message bar and hold for a second at the top of the scroll.
+Older posts will be loaded, but no more than 10, if you need more - again scroll through the posts area to the top.
 
-### Синхронизация
+### Synchronization
 
-В приложении можно одновременно работать на нескольких устройствах. 
-Опубликовав новое сообщение, вы увидите его на другой устройстве автоматически. Удалив сообщение, вы удалите сообщение и на экране другого устройства, если оно там было отображено.
+You can work on multiple devices simultaneously in the app. 
+When you publish a new message, you will see it on the other device automatically. 
+If you delete a message, you will also delete the message on the screen of the other device.
 
-## Использованные технологии
+## Technology stack
 
-Клиентская часть приложения написана на TypeScript. При ее разработке использованы следующие технологии:
+The frontend of the application is written in TypeScript. The following technologies were used in its development:
 
 1. [React](https://react.dev)
 2. [Next.js 14](https://nextjs.org)
@@ -191,7 +193,7 @@ _Сохраняйте заметки, загружайте фотографии,
 11. [heroicons](https://heroicons.com)
 12. [pnpm](https://pnpm.io)
 
-Серверная часть приложения написана на TypeScript. При ее разработке использованы следующие технологии:
+The backend of the application is written in TypeScript. The following technologies were used in its development:
 
 1. [Node.js](https://nodejs.org/en)
 2. [Fastify](https://fastify.dev)
