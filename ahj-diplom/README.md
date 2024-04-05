@@ -39,7 +39,7 @@ in front of you.
 ### Send text messages
 
 Sending text messages is done through the input field at the bottom of the application.
-Type the desired message text and press the button with the paper airplane symbol or the key combination `Cmd/Ctrl + Enter`.
+Type the desired message text and press the button with the paper airplane symbol or the key combination `Cmd/Ctrl + Enter`.  
 
 ![img.png](images/img2.png)
 
@@ -48,9 +48,9 @@ If you want to write a long text, the input field will automatically enlarge to 
 ### Markdown markup for text messages
 
 The application supports [markdown mapping](https://www.markdownguide.org/basic-syntax/), including:
-* displaying links and headings: 
-![img_1.png](images/img3.png)
-* code displaying:
+* displaying links and headings:   
+![img_1.png](images/img3.png)  
+* code displaying:  
 ![img_1.png](images/img4.png)
 * tab displaying:  
 ![img_1.png](images/img5.png)
@@ -61,13 +61,13 @@ The application supports [markdown mapping](https://www.markdownguide.org/basic-
 The app supports a full set of Emoji for the main text input field. To use them:
 * click on the smiley face button next to the send messages button;
 * select the desired emoticons (they will be automatically added to the end of the text field line);
-* close the Emoji selection window by clicking the Emoji button in the input field again;
+* close the Emoji selection window by clicking the Emoji button in the input field again;  
 
 ![img_1.png](images/img6.png)
 
 ### Delete message
 
-To delete a post, click the cross in the upper right corner of the published post.
+To delete a post, click the cross in the upper right corner of the published post.  
 
 ![img_1.png](images/img5.png)
 
@@ -79,7 +79,7 @@ a vertical pane of icons (top to bottom) appears above the paper clip of:
 * adding images;
 * adding video files;
 * adding audio files;
-* adding other files;
+* adding other files;  
 
 ![img_1.png](images/img7.png)
 
@@ -95,12 +95,13 @@ In case you do not need the open file selection panel, click the paperclip symbo
 The application supports the ability to attach a geolocation tag with an address or coordinates to a message (in case the address is unavailable).
 Addresses are selected via Google Maps API.
 
-Press the top button of the vertical menu to select and set the label:
+Press the top button of the vertical menu to select and set the label:  
 
 ![img_1.png](images/img7.png)
 
 The modal window will appear in front of you with a geolocation selection with the point where you are. 
 If you do not allow geolocation, an arbitrary point on the map will open:
+
 ![img_1.png](images/img8.png)
 
 Select a suitable location (it may not necessarily be where you are) and click on it. 
@@ -110,11 +111,12 @@ Press button `Save` for save chosen geo position or `Close` for cancellation.
 
 If you click `Save`, the chosen geo position will be saved and sent with the next message. 
 If you want to cancel the selection, just click on the geo position icon in the menu.
+
 ![img_1.png](images/img7.png)
 
 ### Searching for messages
 
-Searching (filtering) by text of messages is available in the application.
+Searching (filtering) by text of messages is available in the application.  
 
 ![img_1.png](images/img9.png)
 
@@ -127,11 +129,11 @@ If you want to clear the search, delete the text in the search box or click the 
 
 Video and audio files attached to the message can be viewed/listened to by clicking the corresponding elements of the player:
 
-Video player:
+Video player:  
 
 ![img_1.png](images/img10.png)
 
-Audio player:
+Audio player:  
 
 ![img_1.png](images/img11.png)
 
@@ -140,14 +142,14 @@ Audio player:
 You can download files on your device:
 
 * Click on the image you want to download, it will open in a separate window, save it;
-* Click the Download button below the video or audio file;
-![img_1.png](images/img11.png)
+* Click the Download button below the video or audio file;  
+![img_1.png](images/img11.png)    
 * Click on the file name (except audio, video and image);
 
 ### Browse files by category
 
 All files saved in the application can be viewed in the sidebar. To open a file, tap the box icon
-in the upper right corner of the application to the right of the message search field.
+in the upper right corner of the application to the right of the message search field.  
 
 ![img_12.png](images/img12.png)
 
